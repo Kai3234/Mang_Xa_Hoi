@@ -36,11 +36,24 @@ public:
     POST post[100];
 };
 
+class FRIEND
+{
+private:
+    /* data */
+public:
+    FRIEND(/* args */);
+    ~FRIEND();
+};
+
+
+
 
 
 int main()
 {
     int n = 0;
+    USER user[100];
+
     while (1)
     {
         cout<<"Chao mung den ung dung:"<<endl;
