@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <conio.h>
+#include <cstdlib> //rng
+#include <ctime>  
 
 using namespace std;
 
@@ -45,7 +47,19 @@ public:
     ~FRIEND();
 };
 
+void show_ad() {
+    std::string ads[] = {
+        "Ad 1: The City new product from Logoras Artelier",
+        "Ad 2: New products from Siderial Plexus",
+        "Ad 3: ACME ",
+        "Ad 4: ",
+        "Ad 5: "
+    };
 
+    // Randomly select one of the 5 ads
+    int ad_index = std::rand() % 5;  // Generates a number between 0 and 4
+    std::cout << ads[ad_index] << std::endl;
+}
 
 
 
@@ -56,6 +70,15 @@ int main()
 
     while (1)
     {
+        std::srand(std::time(0)); //ads rng
+        int random_number = std::rand() % 2 + 1; //ads dice
+        
+        if (random_number == 1) {
+        show_ad();
+    } else {
+        std::cout << "No ad" << std::endl;
+    }
+        
         cout<<"Chao mung den ung dung:"<<endl;
         cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap lua chon (1, 2, 3): ";
         cin>>n;
