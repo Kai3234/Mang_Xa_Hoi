@@ -40,16 +40,19 @@ protected:
     string name;
     string pass;
     vector<POST> post;
-    vector<FRIEND> friend;
+    FRIEND friend;
 public:
     void postcontent();
 };
 
 class FRIEND
 {
-private:
+protected:
+    vector<string> username;
     
 public:
+    //Hiển thị danh sách bạn bè
+    void 
  
 };
 
