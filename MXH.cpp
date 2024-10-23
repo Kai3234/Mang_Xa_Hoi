@@ -63,7 +63,11 @@ public:
     void postcontent();
     string get_name()
     {
-
+        return name;
+    }
+    string get_pass()
+    {
+        return pass;
     }
     //Tạo file tin nhắn và hiện tin nhắn từ file
     void showMessage(USER m);
@@ -89,10 +93,16 @@ void show_ad() {
     std::cout << ads[ad_index] << std::endl;
 }
 
-void isNameUseable();
-void insertNewName();
+
+//Hàm kiểm tra tên có bị trùng không
+bool isNameUseable(string name);
+//Hàm điền tên và mật khẩu vào file text và lưu tên và mật khẩu vào vector users 
+void insertNewAccount(string name, string pass);
+//Hàm kiểm tra điền đúng tên và mật khẩu chưa
+bool isAccountCorrect(string name, string pass);
 
 
+void searchUsers();
 
 
 int main()
@@ -118,12 +128,13 @@ int main()
         switch (n)
         {
         case 1:
-            while (1)
-            {
-                cout<<"--   Chao mung   --";
-            }
-            
+        {
+            string username, userpass;
+            cout<<"--   Nhap ten nguoi dung: "; cin>>username;
+            cout<<"--   Nhap mat khau: "; cin>>userpass;
+            //
             break;
+        }
         case 2:
         {
             cout<<"--   Nhap ten nguoi dung: ";
