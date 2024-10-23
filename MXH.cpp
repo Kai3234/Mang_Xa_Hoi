@@ -69,10 +69,18 @@ public:
     {
         return pass;
     }
+
+    void signUp(vector<USER> users);
+    void signIn(vector<USER> users);
+
+
+
     //Tạo file tin nhắn và hiện tin nhắn từ file
     void showMessage(USER m);
     //Nhập tin nhắn vào file
     void typeMessage();
+
+    
 };
 
 
@@ -94,21 +102,24 @@ void show_ad() {
 }
 
 
-//Hàm kiểm tra tên có bị trùng không
-bool isNameUseable(string name);
-//Hàm điền tên và mật khẩu vào file text và lưu tên và mật khẩu vào vector users 
-void insertNewAccount(string name, string pass);
-//Hàm kiểm tra điền đúng tên và mật khẩu chưa
-bool isAccountCorrect(string name, string pass);
-
-
-void searchUsers();
+USER* searchUsers(vector<USER> users, string username)
+{
+    for (int i = 0; i < users.size(); i++)
+    {
+        if (users[i].get_name() == username)
+        {
+            return &users[i];
+        }
+    }
+    
+}
 
 
 int main()
 {
     vector<USER> users;
     //Quét các file để lưu dữ liệu vào vector users
+
 
     int n = 0;
     while (1)
@@ -129,21 +140,12 @@ int main()
         {
         case 1:
         {
-            string username, userpass;
-            cout<<"--   Nhap ten nguoi dung: "; cin>>username;
-            cout<<"--   Nhap mat khau: "; cin>>userpass;
-            //
+            
             break;
         }
         case 2:
         {
-            cout<<"--   Nhap ten nguoi dung: ";
-            string newname, newpass;
-            cin>>newname;
-            //Hàm kiểm tra tên hợp lệ
-            cout<<"--   Nhap mat khau: ";
-            cin>>newpass;
-            //Hàm điền tên và mật khẩu vào file text và lưu tên và mật khẩu vào vector users 
+            
             break;
         }
         case 3:
