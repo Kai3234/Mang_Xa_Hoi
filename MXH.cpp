@@ -34,27 +34,44 @@ public:
  
 };
 
-class USER
-{
-protected:
-    string name;
-    string pass;
-    vector<POST> post;
-    FRIEND friend;
-public:
-    void postcontent();
-};
-
 class FRIEND
 {
 protected:
     vector<string> username;
     
 public:
+    //Quét dữ liệu về bạn bè
+    void fileFriend();
+    //Kết bạn
+    void makeFriend();
     //Hiển thị danh sách bạn bè
-    
- 
+    void showFriends();
+    //Hiển thị bạn bè không có tên trong vector list và otherUser
+    void mutual_friend(vector<string> otherlist, string otherUser);
+  
 };
+
+class USER: public FRIEND
+{
+protected:
+    string name;
+    string pass;
+    vector<POST> post;
+public:
+    void postcontent();
+    string get_name()
+    {
+
+    }
+    //Tạo file tin nhắn và hiện tin nhắn từ file
+    void showMessage(USER m);
+    //Nhập tin nhắn vào file
+    void typeMessage();
+};
+
+
+
+
 
 void show_ad() {
     std::string ads[] = {
