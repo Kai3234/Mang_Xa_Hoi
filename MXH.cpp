@@ -89,14 +89,17 @@ void show_ad() {
     std::cout << ads[ad_index] << std::endl;
 }
 
-
+void isNameUseable();
+void insertNewName();
 
 
 
 
 int main()
 {
-    
+    vector<USER> users;
+    //Quét các file để lưu dữ liệu vào vector users
+
     int n = 0;
     while (1)
     {
@@ -117,17 +120,26 @@ int main()
         case 1:
             while (1)
             {
-                /* code */
+                cout<<"--   Chao mung   --";
             }
             
             break;
         case 2:
+        {
+            cout<<"--   Nhap ten nguoi dung: ";
+            string newname, newpass;
+            cin>>newname;
+            //Hàm kiểm tra tên hợp lệ
+            cout<<"--   Nhap mat khau: ";
+            cin>>newpass;
+            //Hàm điền tên và mật khẩu vào file text và lưu tên và mật khẩu vào vector users 
             break;
+        }
         case 3:
             cout<<"--   Thank you and goodbye!   --";
             return 0;
         
-        default: cout<<"Lua chon khong hop le";
+        default: cout<<"--   Lua chon khong hop le!   --";
             break;
         }
     }
