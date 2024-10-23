@@ -37,17 +37,19 @@ public:
 class FRIEND
 {
 protected:
-    vector<string> username;
+    vector<string> friendname;
     
 public:
     //Quét dữ liệu về bạn bè
     void fileFriend();
+    //Kiểm tra có phải là bạn bè
+    bool isFriend();
     //Kết bạn
     void makeFriend();
     //Hiển thị danh sách bạn bè
     void showFriends();
-    //Hiển thị bạn bè không có tên trong vector list và otherUser
-    void mutual_friend(vector<string> otherlist, string otherUser);
+    //Hiển thị bạn bè không có tên trong vector otherfriend và otherUser
+    void mutual_friend(vector<string> otherfriend, string otherUser);
   
 };
 
@@ -113,6 +115,11 @@ int main()
         switch (n)
         {
         case 1:
+            while (1)
+            {
+                /* code */
+            }
+            
             break;
         case 2:
             break;
