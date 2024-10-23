@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <conio.h>
+#include <cstdlib> //rng
+#include <ctime>  
 #include <vector>
 #include <string>
 #include <fstream>
@@ -51,16 +53,7 @@ public:
  
 };
 
-//Trả về user dựa vào tên
-USER findUser(string name, vector<USER> user);
 
-//Tạo hoặc tìm file tin nhắn
-fstream messageFile(USER n, USER m);
-
-//In tin nhắn từ file
-void showMessage();
-//Điền tin nhắn vào file
-void typeMessage();
 
 
 
@@ -70,6 +63,15 @@ int main()
     int n = 0;
     while (1)
     {
+        std::srand(std::time(0)); //ads rng
+        int random_number = std::rand() % 2 + 1; //ads dice
+        
+        if (random_number == 1) {
+        show_ad();
+    } else {
+        std::cout << "No ad" << std::endl;
+    }
+        
         cout<<"Chao mung den ung dung:"<<endl;
         cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap so de lua chon (1, 2, 3): ";
         cin>>n;
