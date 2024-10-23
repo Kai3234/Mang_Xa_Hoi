@@ -1,6 +1,9 @@
 #include <iostream>
 #include <iomanip>
 #include <conio.h>
+#include <vector>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -10,21 +13,23 @@ class COMMENT
 protected:
     string content;
 public:
-    COMMENT(/* args */);
-    ~COMMENT();
+    void typeComment();
+  
 };
 
 
 class POST
 {
 protected:
-    string title;
     string content;
-    COMMENT comment[100];
-
+    vector<COMMENT> comments;
 public:
-    POST(/* args */);
-    ~POST();
+    //Trả về nội dung bài viết
+    string get_content();
+    void typePost();
+    void showComment();
+
+ 
 };
 
 class USER
@@ -32,32 +37,41 @@ class USER
 protected:
     string name;
     string pass;
+    vector<POST> post;
+    vector<FRIEND> friend;
 public:
-    POST post[100];
+    void postcontent();
 };
 
 class FRIEND
 {
 private:
-    /* data */
+    
 public:
-    FRIEND(/* args */);
-    ~FRIEND();
+ 
 };
 
+//Trả về user dựa vào tên
+USER findUser(string name, vector<USER> user);
 
+//Tạo hoặc tìm file tin nhắn
+fstream messageFile(USER n, USER m);
+
+//In tin nhắn từ file
+void showMessage();
+//Điền tin nhắn vào file
+void typeMessage();
 
 
 
 int main()
 {
+    
     int n = 0;
-    USER user[100];
-
     while (1)
     {
         cout<<"Chao mung den ung dung:"<<endl;
-        cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap lua chon (1, 2, 3): ";
+        cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap so de lua chon (1, 2, 3): ";
         cin>>n;
         switch (n)
         {
@@ -73,4 +87,6 @@ int main()
             break;
         }
     }
+   
+
 }
