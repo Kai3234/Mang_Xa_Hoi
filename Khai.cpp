@@ -23,12 +23,21 @@ public:
 class POST
 {
 protected:
+    string user;
     string content;
     vector<COMMENT> comments;
 public:
     //Trả về nội dung bài viết
+    POST(string name, string cont)
+    {
+
+    }
     string get_content();
-    void typePost();
+    
+    void push_back_post(POST newpost)
+    {
+
+    }
     void addComment(string com);
     void showComment();
 
@@ -38,17 +47,25 @@ class USER
 {
 protected:
     string name;
-    string pass;
-    vector<POST> post;
+    
 public:
-    void postcontent();
+    vector<POST> posts;
+    USER(string username)
+    {
+        name = username;
+    }
     string get_name()
     {
         return name;
     }
-    string get_pass()
+    void addpost()
     {
-        return pass;
+        cout<<"-- Nhap noi dung bai viet: ";
+        string cont;
+        cin.ignore(1); getline(cin, cont);
+        POST curPost(name, cont);
+        posts.push_back(curPost);
+
     }
 };
 
@@ -56,14 +73,36 @@ public:
 int main()
 {
     vector<USER> users;
-    //Quét các file để lưu dữ liệu vào vector users
-
-    USER *curUser;
-    int n = 0;
+    USER curUser("Hieu");
     while (1)
     {
-        
+        int n;
+        cout<<"1. Dang bai"<<endl<<"2. Xem bai viet cua minh"<<endl<<"Nhap: ";
+        cin>>n;
+        switch (n)
+        {
+        case 1: 
+        {
+            curUser.addpost();
+            break;
+        }
+        case 2:
+        {
+            for (int i = 0; i < curUser.posts.size(); i++)
+            {
+                cout<<endl<<curUser.posts[i].get_content();
+            }
+            
+            break;
+        }
+        case 3:
+            cout<<"--   Thank you and goodbye!   --";
+            return 0;
+        }
     }
+    
+    
+
     
    
 
