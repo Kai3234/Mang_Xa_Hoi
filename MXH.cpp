@@ -70,19 +70,20 @@ public:
         return pass;
     }
 
-    void signUp(vector<USER> users);
-    void signIn(vector<USER> users);
+    
 
 
 
-    //Tạo file tin nhắn và hiện tin nhắn từ file
+    //Tạo file tin nhắn và hiển thị tin nhắn từ file
     void showMessage(USER m);
     //Nhập tin nhắn vào file
-    void typeMessage();
+    void typeMessage(USER m);
 
     
 };
-
+    //hàm đăng ký, đăng nhập
+    void signUp();
+    void login();
 
 
 
@@ -111,7 +112,7 @@ USER* searchUsers(vector<USER> users, string username)
             return &users[i];
         }
     }
-    
+    return nullptr;
 }
 
 
@@ -140,12 +141,20 @@ int main()
         {
         case 1:
         {
+            string loginName;
+            void login();
+            USER *loginUser = searchUsers(users, loginName);   
+            int choice = 0;
+            while (/* condition */)
+            {
+                /* code */
+            }
             
             break;
         }
         case 2:
         {
-            
+            void signUp();
             break;
         }
         case 3:
