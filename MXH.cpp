@@ -10,7 +10,7 @@
 
 using namespace std;
 
-struct Account {
+struc {
     std::string username;
     std::string passcode;
 };
@@ -127,6 +127,59 @@ public:
     {
         return pass;
     }
+bool read_User(std::vector<Account> &accounts) {
+    std::ifstream file("User.txt"); 
+
+    if (!file) {  
+        std::cerr << "Error: Could not open credentials file." << std::endl;
+        return false;
+    }
+ std::string line, username, passcode;
+
+  while (getline(file, line)) {
+        std::istringstream iss(line);
+        iss >> name >> pass;  // Split line into username and passcode
+        accounts.push_back({name, pass});  // Store the account in the vector
+    }
+
+    file.close();  // Close the file
+    return true;
+}
+
+// Function to verify
+bool verify_login(const std::string &input_username, const std::string &input_passcode, const std::vector<USERt> &user) {
+    // Loop through all accounts and check for a match
+    for (const auto &account : accounts) {
+        if (account.name == input_name && account.pass == input_pass) {
+            return true;  // Login successful
+        }
+    }
+    return false;  // No match found
+}
+
+// Function to sign up a new account and save to file
+void sign_up(std::vector<USER> &user) {
+    std::string new_name, new_pass;
+
+    std::cout << "Sign Up Page" << std::endl;
+    std::cout << "Enter a new username: ";
+    std::cin >> new_name;
+    std::cout << "Enter a new passcode: ";
+    std::cin >> new_pass;
+
+    // Add the new account to the vector
+    users.push_back({new_name, new_pass});
+
+    // Open file in append mode to add the new account to the file
+    std::ofstream file("User.txt", std::ios::app);
+    if (file) {
+        file << new_name << " " << new_pass << "\n";
+        std::cout << "Account created and saved successfully!" << std::endl;
+    } else {
+        std::cerr << "Error: Could not open User file to save new account." << std::endl;
+    }
+    file.close();
+}
     //Tạo file tin nhắn hoặc đọc file tin nhắn và hiển thị tin nhắn từ file
     void showMessage(USER m);
     //Nhập tin nhắn vào file
@@ -200,15 +253,15 @@ int main()
         {
              if (choice == 1) {
         // Log In
-        std::string input_username, input_passcode;
+        std::string input_name, input_pass;
         std::cout << "Login" << std::endl;
         std::cout << "Enter username: ";
-        std::cin >> input_username;
+        std::cin >> input_name;
         std::cout << "Enter passcode: ";
-        std::cin >> input_passcode;
+        std::cin >> input_pass;
 
         // Check if the login is successful
-        if (verify_login(input_username, input_passcode, accounts)) {
+        if (verify_login(input_name, input_pass, users)) {
             std::cout << "Login successful!" << std::endl;
             main_menu();
         } else {
@@ -217,7 +270,7 @@ int main()
 
     } else if (choice == 2) {
         // Sign Up
-        sign_up(accounts);
+        sign_up(users);
 
     } else {
         std::cout << "Invalid choice!" << std::endl;
