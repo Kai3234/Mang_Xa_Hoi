@@ -60,7 +60,6 @@ protected:
     string pass;
     vector<POST> post;
 public:
-    void postcontent();
     string get_name()
     {
         return name;
@@ -69,8 +68,6 @@ public:
     {
         return pass;
     }
-
-
     //Tạo file tin nhắn hoặc đọc file tin nhắn và hiển thị tin nhắn từ file
     void showMessage(USER m);
     //Nhập tin nhắn vào file
@@ -121,7 +118,7 @@ int main()
 {
     vector<USER> users;
     //Quét các file để lưu dữ liệu vào vector users
-
+    
 
     int n = 0;
     while (1)
@@ -228,7 +225,7 @@ int main()
                     }  
                     break;
                 }
-                case 4:
+                case 4:  //gợi ý bạn bè
                 {
                     cout<<"--   Goi y   --"<<endl;
                     //Hiển thị người có bạn chung
@@ -264,7 +261,7 @@ int main()
                     
                     break;
                 }
-                case 5:
+                case 5: //tìm kiếm
                 {
                     cout<<"--   Nhap tu tim kiem: ";
                     string word;
@@ -288,7 +285,7 @@ int main()
                             cout<<"--   Nhap ten nguoi dung: ";
                             string findname;
                             cin>>findname;
-                            USER *friendUser = searchUsers(users, findname);
+                            USER *findUser = searchUsers(users, findname);
                             int choice51 = 0;
                             cout<<"--   Lua chon   --"<<endl;
                             cout<<"1. Xem bai viet"<<endl;
@@ -306,12 +303,13 @@ int main()
                                 case 2:
                                 {
                                     //Hiển thị tin nhắn và yêu cầu nhập tin nhắn mới
-                                    loginUser->showMessage(*friendUser);
-                                    loginUser->typeMessage(*friendUser);
+                                    loginUser->showMessage(*findUser);
+                                    loginUser->typeMessage(*findUser);
                                     break;
                                 }
-                                case 3:
+                                case 3: //Kết bạn
                                 {
+                                    
                                     loginUser->makeFriend();
                                     break;
                                 }
@@ -337,7 +335,7 @@ int main()
                     }
                     break;
                 }
-                case 6:
+                case 6: // đăng xuất
                 {
                     cout<<"--   Tam biet ["<<loginUser->get_name()<<"]!   --";
                     break;
