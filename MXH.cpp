@@ -10,65 +10,6 @@
 
 using namespace std;
 
-struc {
-    std::string username;
-    std::string passcode;
-};
-
-bool read_User(std::vector<Account> &accounts) {
-    std::ifstream file("User.txt"); 
-
-    if (!file) {  
-        std::cerr << "Error: Could not open credentials file." << std::endl;
-        return false;
-    }
- std::string line, username, passcode;
-
-  while (getline(file, line)) {
-        std::istringstream iss(line);
-        iss >> username >> passcode;  // Split line into username and passcode
-        accounts.push_back({username, passcode});  // Store the account in the vector
-    }
-
-    file.close();  // Close the file
-    return true;
-}
-
-// Function to verify
-bool verify_login(const std::string &input_username, const std::string &input_passcode, const std::vector<Account> &accounts) {
-    // Loop through all accounts and check for a match
-    for (const auto &account : accounts) {
-        if (account.username == input_username && account.passcode == input_passcode) {
-            return true;  // Login successful
-        }
-    }
-    return false;  // No match found
-}
-
-// Function to sign up a new account and save to file
-void sign_up(std::vector<USER> &users) {
-    std::string new_username, new_passcode;
-
-    std::cout << "Sign Up Page" << std::endl;
-    std::cout << "Enter a new username: ";
-    std::cin >> new_username;
-    std::cout << "Enter a new passcode: ";
-    std::cin >> new_passcode;
-
-    // Add the new account to the vector
-    users.push_back({new_username, new_passcode});
-
-    // Open file in append mode to add the new account to the file
-    std::ofstream file("User.txt", std::ios::app);
-    if (file) {
-        file << new_username << " " << new_passcode << "\n";
-        std::cout << "Account created and saved successfully!" << std::endl;
-    } else {
-        std::cerr << "Error: Could not open User file to save new account." << std::endl;
-    }
-    file.close();
-}
-
 class COMMENT
 {
 protected:
