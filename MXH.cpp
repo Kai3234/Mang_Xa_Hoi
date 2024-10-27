@@ -7,6 +7,8 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
+
 
 using namespace std;
 
@@ -157,7 +159,7 @@ public:
         
     }
 
-    
+
 
     void addPost()
     {
@@ -176,13 +178,13 @@ public:
         fpost.close();
     }
 
-    void addComment(USER *curUser, int postOrder)
+    void addComment(USER *loginUser, int postOrder)
     {
         cout<<"-- Nhap noi dung binh luan: ";
         string cont;
         cin.ignore(1); getline(cin, cont);
-        COMMENT newCom(name, cont);
-        curUser->posts[postOrder].comments.push_back(newCom);
+        COMMENT newCom(loginUser->get_name(), cont);
+        posts[postOrder].comments.push_back(newCom);
         fstream fcomment;
         string idpo = to_string(postOrder);
         fcomment.open("Post/Comment/" + name + idpo + ".txt", ios::in | ios::out | ios::app);
@@ -190,44 +192,42 @@ public:
         {
             fcomment.open("Post/Comment/" + name + idpo + ".txt", ios::in | ios::out | ios::trunc);
         }
-        fcomment<<name<<"\n";
+        fcomment<<loginUser->get_name()<<"\n";
         fcomment<<cont<<"\n";
-        fcomment.close();   
+        fcomment.close();  
     }
 
     void showPost(USER *curUser)
     {
-        static int postOrder = 0;
+        int postOrder = 0;
         int m = 0;
         if (posts.size() > 0)
         {
-            cout<<"--   Bai viet 1   --"<<endl;
-            cout<<"["<<get_name()<<"]"<<endl;
-            cout<<posts[0].get_content()<<endl<<endl;
-            posts[0].showComment();
             while(m != 4)
             { 
+                cout<<"--   Bai viet "<<postOrder + 1<<"   --"<<endl;
+                cout<<"["<<get_name()<<"]"<<endl;                        
+                cout<<posts[postOrder].get_content()<<endl;
+                posts[postOrder].showComment();
                 cout<<"--   Lua chon   --"<<endl;
                 cout<<"1. Binh luan"<<endl<<"2. Truoc"<<endl<<"3. Sau"<<endl<<"4. Thoat"<<endl;
                 cout<<"Nhap so: "; cin>>m;
+                cout<<"\n";
             switch (m)
             {
 
             case 1:
             {
                 addComment(curUser, postOrder);
+                break;
             }
+            
             case 2:
             {
                 if(postOrder > 0)
                 {
                     postOrder--;
                 }
-                cout<<"--   Bai viet "<<postOrder + 1<<"   --"<<endl;
-                cout<<"["<<get_name()<<"]"<<endl;                        
-                cout<<posts[postOrder].get_content()<<endl<<endl;
-                posts[postOrder].showComment();
-
                 break;
             } 
             case 3:
@@ -236,10 +236,6 @@ public:
                 {
                     postOrder++;
                 }
-                cout<<"--   Bai viet "<<postOrder + 1<<"   --"<<endl;
-                cout<<"["<<get_name()<<"]"<<endl;                        
-                cout<<posts[postOrder].get_content()<<endl<<endl;
-                posts[postOrder].showComment();
                 break;
             } 
             case 4:
@@ -251,18 +247,10 @@ public:
         {
             cout<<"--   "<<name<<" khong co bai viet nao!   --"<<endl;
         }   
-    }
-
-    
-    //Tạo file tin nhắn hoặc đọc file tin nhắn và hiển thị tin nhắn từ file
-    void showMessage(USER m);
-    //Nhập tin nhắn vào file
-    void typeMessage(USER m);
-
-    
+    } 
 };
 
-
+//đăng nhập, đăng ký
 bool read_User(vector<USER>& users) 
 {
     ifstream file("User.txt"); 
@@ -322,13 +310,27 @@ void sign_up(vector<USER> &users)
     } else {
         cerr << "--   Khong the mo User.txt de luu tai khoan   --" << endl;
     }
-    cout<<endl<<users.size()<<endl;
     file.close();
 }
 
-//hàm hiển thị người dùng có chứa word
-void searchUsername(string word, vector<USER> users); 
 
+//tìm kiếm
+string toLower(const string& str) 
+{
+    string result = str;
+    transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
+}
+
+string trim(const string& str) {
+    size_t first = str.find_first_not_of(" \t\n");
+    size_t last = str.find_last_not_of(" \t\n");
+    if (first == string::npos || last == string::npos) 
+    {
+        return "";
+    }
+    return str.substr(first, last - first + 1);
+}
 
 
 USER* searchUsers(vector<USER>& users, string username)
@@ -342,6 +344,90 @@ USER* searchUsers(vector<USER>& users, string username)
     }
     return nullptr;
 }
+
+void searchUsername(const string& word, vector<USER>& users, USER* loginUser) {
+    cout << "[DEBUG] Received word in searchUsername: '" << word << "'\n";
+
+    string lowerWord = toLower(trim(word));
+
+    cout << "[DEBUG] Processed lowerWord: '" << lowerWord << "'\n";
+
+    if (lowerWord.empty()) 
+    {
+        cout << "Nhap tu tim kiem khong hop le.\n";
+        return;
+    }
+
+    vector<USER> matchingUsers;
+
+    for (auto& user : users) 
+    {
+        string lowerUsername = toLower(user.get_name());
+        if (lowerUsername.find(lowerWord) != string::npos && lowerUsername != toLower(loginUser->get_name())) 
+        {
+            matchingUsers.push_back(user);
+        }
+    }
+    if (matchingUsers.empty()) 
+    {
+        cout << "--   Khong co ket qua tim kiem thich hop   --\n";
+        return;
+    }
+    else 
+    {
+        cout << "Ket qua:\n";
+        for (size_t i = 0; i < matchingUsers.size(); ++i) 
+        {
+            cout << i + 1 << ". " << matchingUsers[i].get_name() << "\n";
+        }
+
+        cout << "Chon so de chon nguoi dung: ";
+        int selectedIndex;
+        cin >> selectedIndex;
+
+        if (selectedIndex >= 1 && selectedIndex <= matchingUsers.size()) 
+        {
+            int action;
+            USER* selectedUser = searchUsers(users, matchingUsers[selectedIndex - 1].get_name());
+            while (action != 4)
+            {
+                cout << "User: " << selectedUser->get_name() << "\n";
+                cout << "1. Xem bai viet\n";
+                cout << "2. Nhan tin\n";
+                cout << "3. Ket ban\n";
+                cout << "4. Thoat\n";
+                cout << "--   Nhap so de lua chon: ";
+                cin >> action;
+                switch (action)
+                {
+                case 1:
+                    selectedUser->showPost(loginUser);
+                    break;
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+                case 4:
+                    break;
+                
+                default:
+                    cout << "--   Lua chon khong hop le!   --\n";
+                    break;
+                }
+
+            }
+            return;
+        }
+        else {
+            cout << "--   Lua chon khong hop le!   --\n";
+        }
+    }
+}
+
+
+
+
 
 void show_ad() {
     std::string ads[] = {
@@ -412,7 +498,7 @@ int main()
                 int choice = 0;
                 while (choice != 6)
                 {
-                    cout<<"-- Xin chao ["<<loginUser->get_name()<<"]:   --"<<endl; 
+                    cout<<"-- Menu ["<<loginUser->get_name()<<"]:   --"<<endl; 
                     cout<<"1. Dang bai"<<endl;
                     cout<<"2. Bai viet cua minh"<<endl;
                     cout<<"3. Ban be"<<endl;
@@ -455,13 +541,14 @@ int main()
                                 cin>>fname;
                                 USER *friendUser = searchUsers(users, fname);
                                 int choice31 = 0;
-                                cout<<"--   Lua chon   --"<<endl;
-                                cout<<"1. Xem bai viet"<<endl;
-                                cout<<"2. Nhan tin"<<endl;
-                                cout<<"3. Thoat"<<endl;
-                                cout<<"--   Nhap lua chon: ";
+                                
                                 while (choice31 != 3)
                                 {
+                                    cout<<"--   Lua chon   --"<<endl;
+                                    cout<<"1. Xem bai viet"<<endl;
+                                    cout<<"2. Nhan tin"<<endl;
+                                    cout<<"3. Thoat"<<endl;
+                                    cout<<"--   Nhap lua chon: ";
                                     switch (choice31)
                                     {
                                     case 1:
@@ -536,78 +623,14 @@ int main()
                     }
                     case 5: //tìm kiếm
                     {
-                        /*
+                        
                         cout<<"--   Nhap tu tim kiem: ";
+                        if (cin.peek() == '\n') 
+                            cin.ignore();
                         string word;
-                        cin.ignore(1);
                         getline(cin, word);
-                        //hiển thị danh sách tìm kiếm
-                        searchUsername(word, users);
-
-                        cout<<"--   Lua chon   --"<<endl;
-                        cout<<"1. Lua chon nguoi dung"<<endl;
-                        cout<<"2. Thoat"<<endl;
-                        cout<<"-- Nhap lua chon: "<<endl;
-                        int choice5;
-                        cin>>choice5;
-                        while (choice5 != 2)
-                        {
-                            switch (choice5)
-                            {
-                            case 1:
-                            {
-                                cout<<"--   Nhap ten nguoi dung: ";
-                                string findname;
-                                cin>>findname;
-                                USER *findUser = searchUsers(users, findname);
-                                int choice51 = 0;
-                                cout<<"--   Lua chon   --"<<endl;
-                                cout<<"1. Xem bai viet"<<endl;
-                                cout<<"2. Nhan tin"<<endl;
-                                cout<<"3. Thoat"<<endl;
-                                cout<<"--   Nhap lua chon: ";
-                                while (choice51 != 4)
-                                {
-                                    switch (choice51)
-                                    {
-                                    case 1:
-                                    {
-                                        break;
-                                    }
-                                    case 2:
-                                    {
-                                        //Hiển thị tin nhắn và yêu cầu nhập tin nhắn mới
-                                        loginUser->showMessage(*findUser);
-                                        loginUser->typeMessage(*findUser);
-                                        break;
-                                    }
-                                    case 3: //Kết bạn
-                                    {
-                                        
-                                        loginUser->makeFriend();
-                                        break;
-                                    }
-                                    case 4:
-                                    {
-                                        break;
-                                    }
-                                    default:
-                                        cout<<"--   Lua chon khong hop le!   --"<<endl;
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                            case 2:
-                                break;
-                                
-                            
-                            default:
-                                cout<<"--   Lua chon khong hop le!   --"<<endl;
-                                break;
-                            }
-                        }
-                        */
+                        //word thành chữ không viết hoa
+                        searchUsername(word, users, loginUser);
                         break;
                     }
                     case 6: // đăng xuất
