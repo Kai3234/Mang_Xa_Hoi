@@ -68,10 +68,10 @@ public:
     void filecomment()
     {
         fstream fcomment;
-        fcomment.open("Post/Comment/" + user + idpost + ".txt", ios::in | ios::out);
+        fcomment.open("Posts/Comments/" + user + idpost + ".txt", ios::in | ios::out);
         if(!fcomment)
         {
-            fcomment.open("Post/Comment/" + user + idpost + ".txt", ios::in | ios::out | ios::trunc);
+            fcomment.open("Posts/Comments/" + user + idpost + ".txt", ios::in | ios::out | ios::trunc);
         }
         else
         {
@@ -136,10 +136,10 @@ public:
     void filePost()
     {
         fstream fpost;
-        fpost.open("Post/" + name + ".txt", ios::in | ios::out);
+        fpost.open("Posts/" + name + ".txt", ios::in | ios::out);
         if(!fpost)
         {
-            fpost.open("Post/" + name + ".txt", ios::in | ios::out | ios::trunc);
+            fpost.open("Posts/" + name + ".txt", ios::in | ios::out | ios::trunc);
         }
         else
         {
@@ -163,16 +163,17 @@ public:
 
     void addPost()
     {
+        cout<<"--   Bai viet "<<posts.size() + 1<<"   --\n";
         cout<<"-- Nhap noi dung bai viet: ";
         string cont;
         cin.ignore(1); getline(cin, cont);
         POST curPost(posts.size(), name, cont);
         posts.push_back(curPost);
         fstream fpost;
-        fpost.open("Post/" + name + ".txt", ios::in | ios::out | ios::app);
+        fpost.open("Posts/" + name + ".txt", ios::in | ios::out | ios::app);
         if(!fpost)
         {
-            fpost.open("Post/" + name + ".txt", ios::in | ios::out | ios::trunc);
+            fpost.open("Posts/" + name + ".txt", ios::in | ios::out | ios::trunc);
         }    
         fpost<<cont<<"\n";
         fpost.close();
@@ -187,10 +188,10 @@ public:
         posts[postOrder].comments.push_back(newCom);
         fstream fcomment;
         string idpo = to_string(postOrder);
-        fcomment.open("Post/Comment/" + name + idpo + ".txt", ios::in | ios::out | ios::app);
+        fcomment.open("Posts/Comments/" + name + idpo + ".txt", ios::in | ios::out | ios::app);
         if(!fcomment)
         {
-            fcomment.open("Post/Comment/" + name + idpo + ".txt", ios::in | ios::out | ios::trunc);
+            fcomment.open("Posts/Comments/" + name + idpo + ".txt", ios::in | ios::out | ios::trunc);
         }
         fcomment<<loginUser->get_name()<<"\n";
         fcomment<<cont<<"\n";
@@ -205,14 +206,13 @@ public:
         {
             while(m != 4)
             { 
-                cout<<"--   Bai viet "<<postOrder + 1<<"   --"<<endl;
+                cout<<"\n--   Bai viet "<<postOrder + 1<<"   --"<<endl;
                 cout<<"["<<get_name()<<"]"<<endl;                        
                 cout<<posts[postOrder].get_content()<<endl;
                 posts[postOrder].showComment();
                 cout<<"--   Lua chon   --"<<endl;
                 cout<<"1. Binh luan"<<endl<<"2. Truoc"<<endl<<"3. Sau"<<endl<<"4. Thoat"<<endl;
-                cout<<"Nhap so: "; cin>>m;
-                cout<<"\n";
+                cout<<"--   Nhap so de lua chon: "; cin>>m;
             switch (m)
             {
 
@@ -239,15 +239,57 @@ public:
                 break;
             } 
             case 4:
+                cout<<"--   Dang tro ve   --\n";
                 break;
             }
             }
         }
         else
         {
-            cout<<"--   "<<name<<" khong co bai viet nao!   --"<<endl;
+            cout<<"\n--   "<<name<<" khong co bai viet nao!   --"<<endl;
         }   
     } 
+
+    //tin nhắn
+    string getChatFileName(const USER& chatUser) 
+    {
+        string filename = this->name + "_" + chatUser.name + ".txt";
+        if (this->name > chatUser.name) {
+            filename = chatUser.name + "_" + this->name + ".txt";
+        }
+        return "Messages/" + filename;
+    }
+
+    void typeMessage(const USER& chatUser) {
+        string filename = getChatFileName(chatUser);
+        ofstream outfile(filename, ios::app);
+        if (!outfile) 
+        {
+            cerr << "Khong the mo file: " << filename << endl;
+            return;
+        }
+
+        string message;
+        cout << "[" << this->name << "]: ";
+        cin.ignore(1);
+        getline(cin, message);
+
+        outfile << "[" << this->name << "]: " << message << endl;
+        outfile.close();
+    }
+    void showMessage(const USER& chatUser) 
+    {
+        string filename = getChatFileName(chatUser);
+        ifstream infile(filename);
+
+        cout << "\n---   Cuoc tro chuyen cung [" << chatUser.name << "]  --\n";
+
+        string line;
+        while (getline(infile, line)) {
+            cout << line << endl;
+        }
+        infile.close();
+    }
 };
 
 //đăng nhập, đăng ký
@@ -345,21 +387,20 @@ USER* searchUsers(vector<USER>& users, string username)
     return nullptr;
 }
 
-void searchUsername(const string& word, vector<USER>& users, USER* loginUser) {
-    cout << "[DEBUG] Received word in searchUsername: '" << word << "'\n";
+void searchforUsername(const string& word, vector<USER>& users, USER* loginUser) {
+    //cout << "[DEBUG] Received word in searchUsername: '" << word << "'\n";
 
     string lowerWord = toLower(trim(word));
 
-    cout << "[DEBUG] Processed lowerWord: '" << lowerWord << "'\n";
+    //cout << "[DEBUG] Processed lowerWord: '" << lowerWord << "'\n";
 
     if (lowerWord.empty()) 
     {
-        cout << "Nhap tu tim kiem khong hop le.\n";
+        cout << "--   Tu tim kiem duoc nhap khong hop le   --\n";
         return;
     }
 
     vector<USER> matchingUsers;
-
     for (auto& user : users) 
     {
         string lowerUsername = toLower(user.get_name());
@@ -375,13 +416,13 @@ void searchUsername(const string& word, vector<USER>& users, USER* loginUser) {
     }
     else 
     {
-        cout << "Ket qua:\n";
+        cout << "--   Ket qua tim kiem nguoi dung   --\n";
         for (size_t i = 0; i < matchingUsers.size(); ++i) 
         {
-            cout << i + 1 << ". " << matchingUsers[i].get_name() << "\n";
+            cout << i + 1 << ". [" << matchingUsers[i].get_name() << "]\n";
         }
 
-        cout << "Chon so de chon nguoi dung: ";
+        cout << "\n--   Nhap STT de lua chon nguoi dung: ";
         int selectedIndex;
         cin >> selectedIndex;
 
@@ -391,9 +432,9 @@ void searchUsername(const string& word, vector<USER>& users, USER* loginUser) {
             USER* selectedUser = searchUsers(users, matchingUsers[selectedIndex - 1].get_name());
             while (action != 4)
             {
-                cout << "User: " << selectedUser->get_name() << "\n";
+                cout << "\n--   User: [" << selectedUser->get_name() << "]   --\n";
                 cout << "1. Xem bai viet\n";
-                cout << "2. Nhan tin\n";
+                cout << "2. Tin nhan\n";
                 cout << "3. Ket ban\n";
                 cout << "4. Thoat\n";
                 cout << "--   Nhap so de lua chon: ";
@@ -404,22 +445,50 @@ void searchUsername(const string& word, vector<USER>& users, USER* loginUser) {
                     selectedUser->showPost(loginUser);
                     break;
                 case 2:
-                    break;
+                {
+                    int choicemes = 0;
+                    while (choicemes != 2)
+                    {
+                        loginUser->showMessage(*selectedUser);
+                        cout<<"\n--   Lua chon:    --";
+                        cout<<"\n1. Nhan tin";
+                        cout<<"\n2. Tro ve";
+                        cout<<"\n--   Nhap so de lua chon: ";                      
+                        cin>>choicemes;
+                        switch (choicemes)
+                        {
+                        case 1:
+                            loginUser->typeMessage(*selectedUser);
+                            break;
 
+                        case 2:
+                            cout << "\n--   Dang ket thuc   --\n";
+                            break;
+                    
+                        default:
+                            cout << "\n--   Lua chon khong hop le!   --\n";
+                            break;
+                        }
+                        
+                    }          
+                    break;
+                }
                 case 3:
                     break;
                 case 4:
+                    cout << "\n--   Dang ket thuc   --\n";
                     break;
                 
                 default:
-                    cout << "--   Lua chon khong hop le!   --\n";
+                    cout << "\n--   Lua chon khong hop le!   --\n";
                     break;
                 }
 
             }
             return;
         }
-        else {
+        else 
+        {
             cout << "--   Lua chon khong hop le!   --\n";
         }
     }
@@ -457,6 +526,7 @@ int main()
     int n = 0;
     while (1)
     {
+        /*
         srand(time(0)); //ads rng
         int random_number = rand() % 2 + 1; //ads dice
         
@@ -468,10 +538,11 @@ int main()
         {
             cout << "No ad" << endl;
         }
+        */
         
-        cout<<"--   Chao mung den ung dung   --"<<endl;
+        cout<<"\n--   Chao mung den ung dung   --"<<endl;
         cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap so de lua chon (1, 2, 3): ";
-        cin>>n;
+        cin>>n; cout<<endl;
         switch (n)
         {
             case 1:
@@ -498,12 +569,12 @@ int main()
                 int choice = 0;
                 while (choice != 6)
                 {
-                    cout<<"-- Menu ["<<loginUser->get_name()<<"]:   --"<<endl; 
+                    cout<<"\n--   Menu User: ["<<loginUser->get_name()<<"]:   --"<<endl; 
                     cout<<"1. Dang bai"<<endl;
                     cout<<"2. Bai viet cua minh"<<endl;
                     cout<<"3. Ban be"<<endl;
                     cout<<"4. Goi y ban be"<<endl;
-                    cout<<"5. Tim kiem"<<endl;
+                    cout<<"5. Tim kiem nguoi dung"<<endl;
                     cout<<"6. Dang xuat"<<endl;
                     cout<<"--   Nhap lua chon cua ban: ";
                     cin>>choice;
@@ -623,19 +694,22 @@ int main()
                     }
                     case 5: //tìm kiếm
                     {
-                        
+                        cout<<"\n--   Tim kiem nguoi dung   --"<<endl;
                         cout<<"--   Nhap tu tim kiem: ";
                         if (cin.peek() == '\n') 
                             cin.ignore();
                         string word;
                         getline(cin, word);
-                        //word thành chữ không viết hoa
-                        searchUsername(word, users, loginUser);
+                        cout<<endl;
+                        searchforUsername(word, users, loginUser);
                         break;
                     }
                     case 6: // đăng xuất
                     {
-                        cout<<"--   Tam biet ["<<loginUser->get_name()<<"]!   --";
+                        cout<<"--   Tam biet ["<<loginUser->get_name()<<"]!   --\n";
+                        cout<<"--   Nhan bat ki phim gi de tiep tuc   --";
+                        getch();
+                        system("cls");
                         break;
                     }
                     default:
@@ -653,11 +727,11 @@ int main()
             }
             case 3:
             {
-                cout<<"--   Thank you and goodbye!   --";
+                cout<<"--   Thank you and goodbye!   --\n\n";
                 return 0;
             }
                 
-            default: cout<<"--   Lua chon khong hop le!   --";
+            default: cout<<"--   Lua chon khong hop le!   --\n";
                 break;
     }
 }
