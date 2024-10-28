@@ -13,6 +13,22 @@
 using namespace std;
 
 
+
+void show_ad() {
+    std::string ads[] = {
+        "\n--   [AD]: Crystal Glow - Lan Da Trang Sang, Min Mang Chi Sau 7 Ngay! :[AD]   --",
+        "\n--   [AD]: FitPro - Bien Hinh Chi Sau 30 Ngay! :[AD]   --",
+        "\n--   [AD]: SlimTea - Thon Gon Va Khoe Manh Tu Ben Trong! :[AD]   --",
+        "\n--   [AD]: UltraClean - Cho Xe Sach Bong, Sang Bong Nhu Moi! :[AD]   --",
+        "\n--   [AD]: Duolingo - Cach Hoc Ngoai Ngu Tot Nhat The Gioi! :[AD]   --"
+    };
+
+    // Randomly select one of the 5 ads
+    int ad_index = std::rand() % 5;  // Generates a number between 0 and 4
+    std::cout << ads[ad_index] << std::endl;
+}
+
+
 class COMMENT
 {
 protected:
@@ -206,6 +222,13 @@ public:
         {
             while(m != 4)
             { 
+                srand(time(0)); //ads rng
+                int random_number = rand() % 2 + 1; //ads dice
+                
+                if (random_number == 1) 
+                {
+                    show_ad();
+                }
                 cout<<"\n--   Bai viet "<<postOrder + 1<<"   --"<<endl;
                 cout<<"["<<get_name()<<"]"<<endl;                        
                 cout<<posts[postOrder].get_content()<<endl;
@@ -498,19 +521,6 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
 
 
 
-void show_ad() {
-    std::string ads[] = {
-        "Ad 1: The City new product from Logoras Artelier",
-        "Ad 2: New products from Siderial Plexus",
-        "Ad 3: ACME ",
-        "Ad 4: ",
-        "Ad 5: "
-    };
-
-    // Randomly select one of the 5 ads
-    int ad_index = std::rand() % 5;  // Generates a number between 0 and 4
-    std::cout << ads[ad_index] << std::endl;
-}
 
 int main()
 {
