@@ -500,11 +500,11 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
 
 void show_ad() {
     std::string ads[] = {
-        "Ad 1: The City new product from Logoras Artelier",
-        "Ad 2: New products from Siderial Plexus",
-        "Ad 3: ACME ",
-        "Ad 4: ",
-        "Ad 5: "
+        "CLICK HERE! To have your first class Warp tickets for FREE!",
+        "Gallop on forever onward with Rocinante running shoes!",
+        "Warp express 50% discount on economic class tickets!",
+        "Let's hop on a seafaring experience. Click here to join Ahab and the crew!",
+        "Technological solution from Enkephalin will surely blow your mind!"
     };
 
     // Randomly select one of the 5 ads
@@ -526,7 +526,7 @@ int main()
     int n = 0;
     while (1)
     {
-        /*
+       /*
         srand(time(0)); //ads rng
         int random_number = rand() % 2 + 1; //ads dice
         
@@ -534,11 +534,8 @@ int main()
         {
             show_ad();
         } 
-        else 
-        {
-            cout << "No ad" << endl;
-        }
-        */
+     */
+  
         
         cout<<"\n--   Chao mung den ung dung   --"<<endl;
         cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap so de lua chon (1, 2, 3): ";
@@ -548,7 +545,13 @@ int main()
             case 1:
             {
                 // Log In
-                string input_name, input_pass;
+                        srand(time(0)); //ads rng
+        int random_number = rand() % 2 + 1; //ads dice
+        
+        if (random_number == 1) 
+        {
+            show_ad();
+        } 
                 cout << "--   Dang nhap   --" << endl;
                 cout << "--   Nhap ten nguoi dung: ";
                 cin >> input_name;
