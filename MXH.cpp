@@ -16,10 +16,10 @@ using namespace std;
 
 void show_ad() {
     std::string ads[] = {
-        "\n--   [AD]: Crystal Glow - Lan Da Trang Sang, Min Mang Chi Sau 7 Ngay! :[AD]   --",
-        "\n--   [AD]: FitPro - Bien Hinh Chi Sau 30 Ngay! :[AD]   --",
-        "\n--   [AD]: SlimTea - Thon Gon Va Khoe Manh Tu Ben Trong! :[AD]   --",
-        "\n--   [AD]: UltraClean - Cho Xe Sach Bong, Sang Bong Nhu Moi! :[AD]   --",
+        "\n--   [AD]: Dep Min Khong Ti Vet Cung Crystal Glow! :[AD]   --",
+        "\n--   [AD]: Moi Luc Moi Noi, RelaxPlus Mang Lai Giay Phut Thu Gian! :[AD]   --",
+        "\n--   [AD]: Huong Vi Thanh Loc Tu SlimTea - Co The Thon Gon Tu Ben Trong! :[AD]   --",
+        "\n--   [AD]: Kham Pha Am Thanh Dinh Cao Cung SoundMax Pro! :[AD]   --",
         "\n--   [AD]: Duolingo - Cach Hoc Ngoai Ngu Tot Nhat The Gioi! :[AD]   --"
     };
 
@@ -522,6 +522,7 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
 
 
 
+
 int main()
 {
     vector<USER> users;
@@ -536,7 +537,7 @@ int main()
     int n = 0;
     while (1)
     {
-        /*
+       /*
         srand(time(0)); //ads rng
         int random_number = rand() % 2 + 1; //ads dice
         
@@ -544,11 +545,8 @@ int main()
         {
             show_ad();
         } 
-        else 
-        {
-            cout << "No ad" << endl;
-        }
-        */
+     */
+  
         
         cout<<"\n--   Chao mung den ung dung   --"<<endl;
         cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap so de lua chon (1, 2, 3): ";
