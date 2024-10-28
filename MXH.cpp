@@ -17,7 +17,7 @@ using namespace std;
 void show_ad() {
     std::string ads[] = {
         "\n--   [AD]: Dep Min Khong Ti Vet Cung Crystal Glow! :[AD]   --",
-        "\n--   [AD]: Moi Luc Moi Noi, RelaxPlus Mang Lai Giay Phut Thu Gian! :[AD]   --",
+        "\n--   [AD]: Moi Luc Moi Noi, RelaxPlus Mang Lai Giay Phut! :[AD]   --",
         "\n--   [AD]: Huong Vi Thanh Loc Tu SlimTea - Co The Thon Gon Tu Ben Trong! :[AD]   --",
         "\n--   [AD]: Kham Pha Am Thanh Dinh Cao Cung SoundMax Pro! :[AD]   --",
         "\n--   [AD]: Duolingo - Cach Hoc Ngoai Ngu Tot Nhat The Gioi! :[AD]   --"
@@ -537,16 +537,7 @@ int main()
     int n = 0;
     while (1)
     {
-       /*
-        srand(time(0)); //ads rng
-        int random_number = rand() % 2 + 1; //ads dice
-        
-        if (random_number == 1) 
-        {
-            show_ad();
-        } 
-     */
-  
+
         
         cout<<"\n--   Chao mung den ung dung   --"<<endl;
         cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap so de lua chon (1, 2, 3): ";
