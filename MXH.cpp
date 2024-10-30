@@ -15,7 +15,8 @@ using namespace std;
 
 
 void show_ad() {
-    std::string ads[] = {
+    string ads[] = 
+    {
         "\n--   [AD]: Dep Min Khong Ti Vet Cung Crystal Glow! :[AD]   --",
         "\n--   [AD]: Moi Luc Moi Noi, RelaxPlus Mang Lai Giay Phut! :[AD]   --",
         "\n--   [AD]: Huong Vi Thanh Loc Tu SlimTea - Co The Thon Gon Tu Ben Trong! :[AD]   --",
@@ -24,8 +25,8 @@ void show_ad() {
     };
 
     // Randomly select one of the 5 ads
-    int ad_index = std::rand() % 5;  // Generates a number between 0 and 4
-    std::cout << ads[ad_index] << std::endl;
+    int ad_index = rand() % 5;  // Generates a number between 0 and 4
+    cout << ads[ad_index] << endl;
 }
 
 
@@ -608,7 +609,7 @@ int main()
     {
 
         
-        cout<<"\n--   Chao mung den ung dung   --"<<endl;
+        cout<<"\n----------<   Chao mung den ung dung   >----------"<<endl;
         cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap so de lua chon (1, 2, 3): ";
         cin>>n; cout<<endl;
         switch (n)
@@ -626,7 +627,7 @@ int main()
                 // Check if the login is successful
                 if (verify_login(input_name, input_pass, users)) 
                 {
-                    cout << "--   Dang nhap thanh cong!   --" << endl;
+                    cout << "\n--   Dang nhap thanh cong!   --" << endl;
                     cout<<"--   Nhan bat ki phim gi de tiep tuc   --";
                     getch();
                     system("cls");
@@ -640,7 +641,7 @@ int main()
                 int choice = 0;
                 while (choice != 8)
                 {
-                    cout<<"\n--   Menu User: ["<<loginUser->get_name()<<"]:   --"<<endl; 
+                    cout<<"\n----------   Menu User: ["<<loginUser->get_name()<<"]:   ----------"<<endl; 
                     cout<<"1. Dang bai"<<endl;
                     cout<<"2. Bai viet cua minh"<<endl;
                     cout<<"3. Xem bai viet cua moi nguoi"<<endl;
