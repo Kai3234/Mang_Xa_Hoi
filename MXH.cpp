@@ -132,8 +132,8 @@ class USER//: public FRIEND
 protected:
     string name;
     string pass;
-    vector<POST> posts;
 public:
+    vector<POST> posts;
     USER(string username, string passcode)
     {
         name = username;
@@ -146,10 +146,6 @@ public:
     string get_pass()
     {
         return pass;
-    }
-    int get_posts_size()
-    {
-        return posts.size();
     }
     
 
@@ -218,7 +214,7 @@ public:
         fcomment.close();  
     }
 
-    void showPost(USER *curUser)
+    void showPost(USER *loginUser)
     {
         int postOrder = 0;
         int m = 0;
@@ -226,9 +222,7 @@ public:
         {
             while(m != 4)
             { 
-                srand(time(0)); //ads rng
                 int random_number = rand() % 2 + 1; //ads dice
-                
                 if (random_number == 1) 
                 {
                     show_ad();
@@ -240,35 +234,35 @@ public:
                 cout<<"--   Lua chon   --"<<endl;
                 cout<<"1. Binh luan"<<endl<<"2. Truoc"<<endl<<"3. Sau"<<endl<<"4. Thoat"<<endl;
                 cout<<"--   Nhap so de lua chon: "; cin>>m;
-            switch (m)
-            {
+                switch (m)
+                {
 
-            case 1:
-            {
-                addComment(curUser, postOrder);
-                break;
-            }
-            
-            case 2:
-            {
-                if(postOrder > 0)
+                case 1:
                 {
-                    postOrder--;
+                    addComment(loginUser, postOrder);
+                    break;
                 }
-                break;
-            } 
-            case 3:
-            {
-                if(postOrder < posts.size() - 1)                    
+                
+                case 2:
                 {
-                    postOrder++;
+                    if(postOrder > 0)
+                    {
+                        postOrder--;
+                    }
+                    break;
+                } 
+                case 3:
+                {
+                    if(postOrder < posts.size() - 1)                    
+                    {
+                        postOrder++;
+                    }
+                    break;
+                } 
+                case 4:
+                    cout<<"--   Dang tro ve   --\n";
+                    break;
                 }
-                break;
-            } 
-            case 4:
-                cout<<"--   Dang tro ve   --\n";
-                break;
-            }
             }
         }
         else
@@ -417,15 +411,8 @@ USER* searchUsers(vector<USER>& users, string username)
     return nullptr;
 }
 
-void chooseUser(USER* loginUser, vector<USER> listUser, vector<USER>& users)
+void optionUser(USER* loginUser, USER* selectedUser)
 {
-    cout << "\n--   Nhap STT de lua chon nguoi dung: ";
-    int selectedIndex;
-    cin >> selectedIndex;
-    if (selectedIndex >= 1 && selectedIndex <= listUser.size()) 
-    {
-            
-    USER* selectedUser = searchUsers(users, listUser[selectedIndex - 1].get_name());
     int action;
     while (action != 4)
     {
@@ -481,13 +468,30 @@ void chooseUser(USER* loginUser, vector<USER> listUser, vector<USER>& users)
             break;
         }
 
-        }
-        return;
     }
-    else 
+
+}
+
+void chooseUser(USER* loginUser, vector<USER> listUser, vector<USER>& users)
+{
+    
+    while (1)
     {
-        cout << "--   Lua chon khong hop le!   --\n";
-    }
+        cout << "\n--   Nhap STT de lua chon nguoi dung: ";
+        int selectedIndex;
+        cin >> selectedIndex;
+        if (selectedIndex >= 1 && selectedIndex <= listUser.size()) 
+        {     
+            USER* selectedUser = searchUsers(users, listUser[selectedIndex - 1].get_name());
+            
+            optionUser(loginUser, selectedUser);
+            return;
+        }
+        else 
+        {
+            cout << "--   Lua chon khong hop le!   --\n";
+        }
+    }   
 }
 
 void searchforUsername(const string& word, vector<USER>& users, USER* loginUser) {
@@ -524,8 +528,60 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
         {
             cout << i + 1 << ". [" << matchingUsers[i].get_name() << "]\n";
         }
+        
         chooseUser(loginUser, matchingUsers, users);
         
+    }
+}
+
+void everyonePost(USER* loginUser, vector<USER>& users)
+{
+    int choice3 = 0;
+    while (choice3 != 4)
+    {
+        int iuser = rand() % users.size();
+        if(users[iuser].posts.size() == 0 || users[iuser].get_name() == loginUser->get_name())
+        {
+            continue;
+        }
+            
+        int random_number = rand() % 2 + 1; 
+        if (random_number == 1) 
+        {
+            show_ad();
+        }
+        
+        int ipost = rand() % users[iuser].posts.size();
+        cout<<"\n--   Bai viet "<<ipost + 1<<"   --"<<endl;
+        cout<<"["<<users[iuser].get_name()<<"]"<<endl;                        
+        cout<<users[iuser].posts[ipost].get_content()<<endl;
+        users[iuser].posts[ipost].showComment();
+        cout<<"--   Lua chon   --"<<endl;
+        cout<<"1. Xem nguoi dang"<<endl<<"2. Binh luan"<<endl<<"3. Tiep"<<endl<<"4. Thoat"<<endl;
+        cout<<"--   Nhap so de lua chon: "; 
+        cin>>choice3;
+        switch (choice3)
+        {
+
+        case 1:
+        {
+            optionUser(loginUser, &users[iuser]);
+            break;
+        }
+        
+        case 2:
+        {
+            users[iuser].addComment(loginUser, ipost);
+            break;
+        } 
+        case 3:
+        {
+            break;
+        } 
+        case 4:
+            cout<<"--   Dang tro ve   --\n";
+            break;
+        }
     }
 }
 
@@ -537,6 +593,7 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
 
 int main()
 {
+    srand(time(0));
     vector<USER> users;
     read_User(users);
     //Quét các file để lưu dữ liệu vào vector users
@@ -581,7 +638,7 @@ int main()
                 }
                 USER *loginUser = searchUsers(users, input_name);   
                 int choice = 0;
-                while (choice != 6)
+                while (choice != 8)
                 {
                     cout<<"\n--   Menu User: ["<<loginUser->get_name()<<"]:   --"<<endl; 
                     cout<<"1. Dang bai"<<endl;
@@ -590,7 +647,7 @@ int main()
                     cout<<"4. Ban be"<<endl;
                     cout<<"5. Goi y ban be"<<endl;
                     cout<<"6. Tim kiem nguoi dung"<<endl;
-                    cout<<"7. Tin nhan tu nguoi la"<<endl;
+                    cout<<"7. Nguoi la nhan tin voi ban"<<endl;
                     cout<<"8. Dang xuat"<<endl;
                     cout<<"--   Nhap lua chon cua ban: ";
                     cin>>choice;
@@ -609,82 +666,7 @@ int main()
                     }
                     case 3: //Moi nguoi
                     {
-                        int choice3 = 0;
-                        while (choice3 != 4)
-                        {
-                            int iuser = rand() % users.size();
-                            if(users[iuser].get_posts_size() == 0)
-                            {
-                                continue;
-                            }
-                            int ipost = rand() % users[iuser].get_posts_size();
-                        }
-                        
-                        
-
-
-                    }
-                    case 4: //Bạn bè
-                    {   
-                        /*
-                        int choice3 = 0;
-                        //Hiển thị danh sách bạn bè
-                        loginUser->showFriends();
-                        cout<<"--   Lua chon   --"<<endl;
-                        cout<<"1. Lua chon ban be"<<endl;
-                        cout<<"2. Thoat"<<endl;
-                        cout<<"--   Nhap lua chon: ";
-                        cin>>choice3;
-                        while (choice3 != 2)
-                        {
-                            switch (choice3)
-                            {
-                            case 1:
-                            {
-                                string fname;
-                                cout<<"--   Nhap ten nguoi dung: ";
-                                cin>>fname;
-                                USER *friendUser = searchUsers(users, fname);
-                                int choice31 = 0;
-                                
-                                while (choice31 != 3)
-                                {
-                                    cout<<"--   Lua chon   --"<<endl;
-                                    cout<<"1. Xem bai viet"<<endl;
-                                    cout<<"2. Nhan tin"<<endl;
-                                    cout<<"3. Thoat"<<endl;
-                                    cout<<"--   Nhap lua chon: ";
-                                    switch (choice31)
-                                    {
-                                    case 1:
-                                    {
-                                        break;
-                                    }
-                                    case 2:
-                                    {
-                                        //Hiển thị tin nhắn và yêu cầu nhập tin nhắn mới
-                                        loginUser->showMessage(*friendUser);
-                                        loginUser->typeMessage(*friendUser);
-                                        break;
-                                    }
-                                    case 3:
-                                    {
-                                        break;
-                                    }
-                                    default:
-                                        cout<<"--   Lua chon khong hop le!   --"<<endl;
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                            case 2:
-                                break;                   
-                            default:
-                                cout<<"--   Lua chon khong hop le!   --"<<endl;
-                                break;
-                            }
-                            */
+                        everyonePost(loginUser, users);
                         break;
                     }  
                         
