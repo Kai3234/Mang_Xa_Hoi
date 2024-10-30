@@ -103,19 +103,24 @@ public:
         }
         fcomment.close();
     }
-    
-
- 
 };
 
 
-class FRIEND
+class FRIEND 
 {
 protected:
-    vector<string> friendname;
-    
+    vector<string> friendlist; 
+
 public:
-  
+    bool isFriend(string& name)  
+    {
+        return find(friendlist.begin(), friendlist.end(), name) != friendlist.end();
+    }
+
+    vector<string>& getFriends() 
+    {
+        return friendlist;
+    }
 };
 
 class USER: public FRIEND
@@ -163,8 +168,6 @@ public:
         }
         
     }
-
-
 
     void addPost()
     {
@@ -261,7 +264,7 @@ public:
     } 
 
     //tin nhắn
-    string getChatFileName(const USER& chatUser) 
+    string getChatFileName(USER& chatUser) 
     {
         string filename = this->name + "_" + chatUser.name + ".txt";
         if (this->name > chatUser.name) {
@@ -270,7 +273,8 @@ public:
         return "Messages/" + filename;
     }
 
-    void typeMessage(const USER& chatUser) {
+    void typeMessage(USER& chatUser) 
+    {
         string filename = getChatFileName(chatUser);
         ofstream outfile(filename, ios::app);
         if (!outfile) 
@@ -287,7 +291,8 @@ public:
         outfile << "[" << this->name << "]: " << message << endl;
         outfile.close();
     }
-    void showMessage(const USER& chatUser) 
+
+    void showMessage(USER& chatUser) 
     {
         string filename = getChatFileName(chatUser);
         ifstream infile(filename);
@@ -299,6 +304,38 @@ public:
             cout << line << endl;
         }
         infile.close();
+    }
+
+    void fileFriend() 
+    {
+        ifstream infile("Friends/" + name + "_friends.txt"); // Personal friend file
+        string friendName;
+        while (infile >> friendName) {
+            if (!isFriend(friendName)) 
+            {
+                friendlist.push_back(friendName);
+            }
+        }
+        infile.close();
+    }
+
+    void makeFriend(string friendName, USER* friendUser) 
+    {
+        if (isFriend(friendName)) 
+        {
+            cout << friendName << "--   Cac ban da la ban be voi nhau    --\n";
+            return;
+        }
+
+        friendlist.push_back(friendName);
+        friendUser->friendlist.push_back(name);
+        ofstream outfile1("Friends/" + name + "_friends.txt", ios::app);
+        outfile1 << friendName << endl;
+        outfile1.close();
+        ofstream outfile2("Friends/" + friendName + "_friends.txt", ios::app);
+        outfile2 << name << endl;
+        outfile2.close();
+        cout << "--   Thanh cong ket ban voi [" << friendName << "]   --\n";
     }
 };
 
@@ -447,6 +484,7 @@ void optionUser(USER* loginUser, USER* selectedUser)
             break;
         }
         case 3:
+            loginUser->makeFriend(selectedUser->get_name(), selectedUser);
             break;
         case 4:
             cout << "\n--   Dang ket thuc   --\n";
@@ -461,32 +499,37 @@ void optionUser(USER* loginUser, USER* selectedUser)
 
 }
 
-void chooseUser(USER* loginUser, vector<USER> listUser, vector<USER>& users)
+void chooseUser(USER* loginUser, vector<string> listUser, vector<USER>& users)
 {
     for (size_t i = 0; i < listUser.size(); ++i) 
     {
-        cout << i + 1 << ". [" << listUser[i].get_name() << "]\n";
+        cout << i + 1 << ". [" << listUser[i] << "]\n";
     }
-        
-    while (1)
+    cout<<endl<<listUser.size() + 1<<". Thoat";
+    
+    int selectedIndex;
+    while (selectedIndex != listUser.size() + 1)
     {
         cout << "\n--   Nhap STT de lua chon nguoi dung: ";
-        int selectedIndex;
         cin >> selectedIndex;
         if (selectedIndex >= 1 && selectedIndex <= listUser.size()) 
         {     
-            USER* selectedUser = searchUsers(users, listUser[selectedIndex - 1].get_name());      
+            USER* selectedUser = searchUsers(users, listUser[selectedIndex - 1]);      
             optionUser(loginUser, selectedUser);
             return;
         }
+        else if(selectedIndex == listUser.size() + 1)
+        {
+            cout<<"\n--   Dang tro ve   --\n";
+        }
         else 
         {
-            cout << "--   Lua chon khong hop le!   --\n";
+            cout << "\n--   Lua chon khong hop le!   --\n";
         }
     }   
 }
 
-void searchforUsername(const string& word, vector<USER>& users, USER* loginUser) {
+void searchforUsername(string& word, vector<USER>& users, USER* loginUser) {
     //cout << "[DEBUG] Received word in searchUsername: '" << word << "'\n";
 
     string lowerWord = toLower(trim(word));
@@ -498,13 +541,13 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
         cout << "--   Tu tim kiem duoc nhap khong hop le   --\n";
         return;
     }
-    vector<USER> matchingUsers;
+    vector<string> matchingUsers;
     for (auto& user : users) 
     {
         string lowerUsername = toLower(user.get_name());
         if (lowerUsername.find(lowerWord) != string::npos && lowerUsername != toLower(loginUser->get_name())) 
         {
-            matchingUsers.push_back(user);
+            matchingUsers.push_back(user.get_name());
         }
     }
     if (matchingUsers.empty()) 
@@ -572,6 +615,47 @@ void everyonePost(USER* loginUser, vector<USER>& users)
     }
 }
 
+//Friend
+void showFriend(USER* loginUser, vector<USER>& users) 
+{
+    vector<string> friends = loginUser->getFriends();
+    if(friends.size() == 0)
+    {
+        cout<<"\n--   Ban chua ket ban voi ai   --\n";
+        return;
+    }
+    cout << "\n--   Danh sach ban be cua [" << loginUser->get_name() << "]   --\n";
+    chooseUser(loginUser, friends, users);
+}
+
+void showMutualFriend(USER* loginUser, vector<USER>& users) 
+{
+    vector<string> mutualFriends;
+    vector<string>& loginUserFriends = loginUser->getFriends();
+
+    for (string& friendName : loginUserFriends) 
+    {
+        for (USER& user : users) 
+        {
+            if (user.isFriend(friendName) && user.get_name() != loginUser->get_name()) 
+            {
+                if (find(mutualFriends.begin(), mutualFriends.end(), friendName) == mutualFriends.end()) 
+                {
+                    mutualFriends.push_back(user.get_name());
+                }
+            }
+        }
+    }
+
+    if(mutualFriends.size() == 0)
+    {
+        cout<<"\n--   Ban khong co ban chung voi nguoi dung nao   --\n";
+        return;
+    }
+
+    cout << "\n--   Nhung nguoi ban co the biet   --\n";
+    chooseUser(loginUser, mutualFriends, users);
+}
 
 
 
@@ -586,11 +670,10 @@ int main()
     //Quét các file để lưu dữ liệu vào vector users
     for(int i = 0; i < users.size(); i++)
     {
+        users[i].fileFriend();
         users[i].filePost();
     }
     
-    
-
     int n = 0;
     while (1)
     {
@@ -657,43 +740,16 @@ int main()
                         everyonePost(loginUser, users);
                         break;
                     }  
+
+                    case 4:
+                    {
+                        showFriend(loginUser, users);
+                        break;
+                    }
                         
                     case 5:  //gợi ý bạn bè
                     {
-                        /*
-                        cout<<"--   Goi y   --"<<endl;
-                        //Hiển thị người có bạn chung
-                        loginUser->mutual_friend();
-                        cout<<"--   Lua chon   --"<<endl;
-                        cout<<"1. Lua chon nguoi dung ket ban"<<endl;
-                        cout<<"2. Thoat"<<endl;
-                        cout<<"-- Nhap lua chon: "<<endl;
-                        int choice4 = 0;
-                        cin>>choice4;
-                        while (choice4 != 2)
-                        {
-                            switch (choice4)
-                            {
-                            case 1:
-                            {
-                                cout<<"--   Nhap ten nguoi dung: ";
-                                string mfname;
-                                cin>>mfname;
-                                //Kết bạn với người dùng mfname
-                                loginUser->makeFriend();
-                                break;
-                            }
-                            case 2:
-                                break;
-                                
-                            
-                            default:
-                                cout<<"--   Lua chon khong hop le!   --"<<endl;
-                                break;
-                            }
-                        }
-                        */
-                        
+                        showMutualFriend(loginUser, users);     
                         break;
                     }
                     case 6: //tìm kiếm
