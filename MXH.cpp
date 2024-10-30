@@ -14,7 +14,8 @@ using namespace std;
 
 
 
-void show_ad() {
+void show_ad() 
+{
     string ads[] = 
     {
         "\n--   [AD]: Dep Min Khong Ti Vet Cung Crystal Glow! :[AD]   --",
@@ -24,8 +25,7 @@ void show_ad() {
         "\n--   [AD]: Duolingo - Cach Hoc Ngoai Ngu Tot Nhat The Gioi! :[AD]   --"
     };
 
-    // Randomly select one of the 5 ads
-    int ad_index = rand() % 5;  // Generates a number between 0 and 4
+    int ad_index = rand() % 5;  
     cout << ads[ad_index] << endl;
 }
 
@@ -61,12 +61,14 @@ protected:
     
 public:
     vector<COMMENT> comments;
+
     POST(int order, string name, string cont)
     {
         idpost = to_string(order);
         user = name;
         content = cont;
     }
+
     string get_content()
     {
         return content;
@@ -82,6 +84,7 @@ public:
         }
         cout<<endl;
     }
+
     void filecomment()
     {
         fstream fcomment;
@@ -130,22 +133,27 @@ protected:
     string pass;
 public:
     vector<POST> posts;
+
     USER(string username, string passcode)
     {
         name = username;
         pass = passcode;
     }
+
     string get_name()
     {
         return name;
     }
+    
     string get_pass()
     {
         return pass;
     }
+
     void filePost()
     {
         fstream fpost;
+        
         fpost.open("Posts/" + name + ".txt", ios::in | ios::out);
         if(!fpost)
         {
@@ -153,7 +161,6 @@ public:
         }
         else
         {
-            fpost.seekg(0, ios::beg);
             string cont;
             while (getline(fpost, cont))
             {   
@@ -175,8 +182,10 @@ public:
         cout<<"-- Nhap noi dung bai viet: ";
         string cont;
         cin.ignore(1); getline(cin, cont);
+
         POST curPost(posts.size(), name, cont);
         posts.push_back(curPost);
+
         fstream fpost;
         fpost.open("Posts/" + name + ".txt", ios::in | ios::out | ios::app);
         if(!fpost)
@@ -192,8 +201,10 @@ public:
         cout<<"-- Nhap noi dung binh luan: ";
         string cont;
         cin.ignore(1); getline(cin, cont);
+
         COMMENT newCom(loginUser->get_name(), cont);
         posts[postOrder].comments.push_back(newCom);
+
         fstream fcomment;
         string idpo = to_string(postOrder);
         fcomment.open("Posts/Comments/" + name + idpo + ".txt", ios::in | ios::out | ios::app);
@@ -214,21 +225,24 @@ public:
         {
             while(m != 4)
             { 
-                int random_number = rand() % 2 + 1; //ads dice
+                int random_number = rand() % 2 + 1;
                 if (random_number == 1) 
                 {
                     show_ad();
                 }
+
                 cout<<"\n--   Bai viet "<<postOrder + 1<<"   --"<<endl;
                 cout<<"["<<get_name()<<"]"<<endl;                        
                 cout<<posts[postOrder].get_content()<<endl;
                 posts[postOrder].showComment();
+
                 cout<<"--   Lua chon   --"<<endl;
                 cout<<"1. Binh luan"<<endl<<"2. Truoc"<<endl<<"3. Sau"<<endl<<"4. Thoat"<<endl;
-                cout<<"--   Nhap so de lua chon: "; cin>>m;
+                cout<<"--   Nhap so de lua chon: "; 
+                cin>>m;
+
                 switch (m)
                 {
-
                 case 1:
                 {
                     addComment(loginUser, postOrder);
@@ -243,6 +257,7 @@ public:
                     }
                     break;
                 } 
+
                 case 3:
                 {
                     if(postOrder < posts.size() - 1)                    
@@ -251,6 +266,7 @@ public:
                     }
                     break;
                 } 
+
                 case 4:
                     cout<<"--   Dang tro ve   --\n";
                     break;
@@ -259,11 +275,10 @@ public:
         }
         else
         {
-            cout<<"\n--   "<<name<<" khong co bai viet nao!   --"<<endl;
+            cout<<"\n--   ["<<name<<"] khong co bai viet nao!   --"<<endl;
         }   
     } 
 
-    //tin nhắn
     string getChatFileName(USER& chatUser) 
     {
         string filename = this->name + "_" + chatUser.name + ".txt";
@@ -300,7 +315,8 @@ public:
         cout << "\n---   Cuoc tro chuyen cung [" << chatUser.name << "]  --\n";
 
         string line;
-        while (getline(infile, line)) {
+        while (getline(infile, line)) 
+        {
             cout << line << endl;
         }
         infile.close();
@@ -308,9 +324,10 @@ public:
 
     void fileFriend() 
     {
-        ifstream infile("Friends/" + name + "_friends.txt"); // Personal friend file
+        ifstream infile("Friends/" + name + "_friends.txt"); 
         string friendName;
-        while (infile >> friendName) {
+        while (infile >> friendName) 
+        {
             if (!isFriend(friendName)) 
             {
                 friendlist.push_back(friendName);
@@ -329,12 +346,15 @@ public:
 
         friendlist.push_back(friendName);
         friendUser->friendlist.push_back(name);
+
         ofstream outfile1("Friends/" + name + "_friends.txt", ios::app);
         outfile1 << friendName << endl;
         outfile1.close();
+
         ofstream outfile2("Friends/" + friendName + "_friends.txt", ios::app);
         outfile2 << name << endl;
         outfile2.close();
+
         cout << "--   Thanh cong ket ban voi [" << friendName << "]   --\n";
     }
 };
@@ -352,32 +372,31 @@ bool read_User(vector<USER>& users)
     while (getline(file, line)) 
     {
         istringstream iss(line);
-        iss >> name >> pass;  // Split line into username and passcode
-        users.push_back({name, pass});  // Store the account in the vector
+        iss >> name >> pass;  
+        users.push_back({name, pass});  
     }
-    file.close();  // Close the file
+    file.close(); 
     return true;
 }
-// Function to verify
+
 bool verify_login(string input_name, string input_pass, vector<USER> users) 
 {
-    // Loop through all accounts and check for a match
     for (auto &user : users) 
     {
         if (user.get_name() == input_name && user.get_pass() == input_pass) {
-            return true;  // Login successful
+            return true;  
         }
     }
-    return false;  // No match found
+    return false;  
 }
 
-    // Function to sign up a new account and save to file
 void sign_up(vector<USER> &users) 
 {
     string new_name, new_pass;
     cout << "--   Dang ky   --" << std::endl;
-    cout << "--   Nhap ten nguoi dung: ";
+    cout << "--   Nhap ten dang ky: ";
     cin >> new_name;
+
     for (auto &user : users) 
     {
         if (user.get_name() == new_name) 
@@ -388,18 +407,21 @@ void sign_up(vector<USER> &users)
     }
     cout << "--   Nhap mat khau: ";
     cin >> new_pass;
-    // Add the new account to the vector
+
     USER p(new_name, new_pass);
     users.push_back(p);
-    // Open file in append mode to add the new account to the file
+    
     ofstream file("User.txt", ios::app);
-    if (file) {
+    if (file) 
+    {
         file << new_name << " " << new_pass << "\n";
         cout << "--   Dang ky thanh cong!" << endl;
         cout<<"--   Nhan bat ki phim gi de tiep tuc   --";
         getch();
         system("cls");
-    } else {
+    } 
+    else 
+    {
         cerr << "--   Khong the mo User.txt de luu tai khoan   --" << endl;
     }
     file.close();
@@ -414,7 +436,8 @@ string toLower(const string& str)
     return result;
 }
 
-string trim(const string& str) {
+string trim(const string& str) 
+{
     size_t first = str.find_first_not_of(" \t\n");
     size_t last = str.find_last_not_of(" \t\n");
     if (first == string::npos || last == string::npos) 
@@ -529,18 +552,16 @@ void chooseUser(USER* loginUser, vector<string> listUser, vector<USER>& users)
     }   
 }
 
-void searchforUsername(string& word, vector<USER>& users, USER* loginUser) {
-    //cout << "[DEBUG] Received word in searchUsername: '" << word << "'\n";
-
+void searchforUsername(string& word, vector<USER>& users, USER* loginUser) 
+{
     string lowerWord = toLower(trim(word));
-
-    //cout << "[DEBUG] Processed lowerWord: '" << lowerWord << "'\n";
 
     if (lowerWord.empty()) 
     {
         cout << "--   Tu tim kiem duoc nhap khong hop le   --\n";
         return;
     }
+
     vector<string> matchingUsers;
     for (auto& user : users) 
     {
@@ -550,6 +571,7 @@ void searchforUsername(string& word, vector<USER>& users, USER* loginUser) {
             matchingUsers.push_back(user.get_name());
         }
     }
+
     if (matchingUsers.empty()) 
     {
         cout << "--   Khong co ket qua tim kiem thich hop   --\n";
@@ -586,8 +608,12 @@ void everyonePost(USER* loginUser, vector<USER>& users)
         cout<<"["<<users[iuser].get_name()<<"]"<<endl;                        
         cout<<users[iuser].posts[ipost].get_content()<<endl;
         users[iuser].posts[ipost].showComment();
+
         cout<<"--   Lua chon   --"<<endl;
-        cout<<"1. Xem nguoi dang"<<endl<<"2. Binh luan"<<endl<<"3. Tiep"<<endl<<"4. Thoat"<<endl;
+        cout<<"1. Xem nguoi dang"<<endl;
+        cout<<"2. Binh luan"<<endl;
+        cout<<"3. Tiep"<<endl;
+        cout<<"4. Thoat"<<endl;
         cout<<"--   Nhap so de lua chon: "; 
         cin>>choice3;
         switch (choice3)
@@ -624,6 +650,7 @@ void showFriend(USER* loginUser, vector<USER>& users)
         cout<<"\n--   Ban chua ket ban voi ai   --\n";
         return;
     }
+
     cout << "\n--   Danh sach ban be cua [" << loginUser->get_name() << "]   --\n";
     chooseUser(loginUser, friends, users);
 }
@@ -659,15 +686,11 @@ void showMutualFriend(USER* loginUser, vector<USER>& users)
 
 
 
-
-
-
 int main()
 {
     srand(time(0));
     vector<USER> users;
     read_User(users);
-    //Quét các file để lưu dữ liệu vào vector users
     for(int i = 0; i < users.size(); i++)
     {
         users[i].fileFriend();
@@ -677,28 +700,27 @@ int main()
     int n = 0;
     while (1)
     {
-
-        
         cout<<"\n----------<   Chao mung den ung dung   >----------"<<endl;
-        cout<<"1. Dang nhap"<<endl<<"2. Dang ky"<<endl<<"3. Thoat"<<endl<<"--   Nhap so de lua chon (1, 2, 3): ";
+        cout<<"1. Dang nhap"<<endl;
+        cout<<"2. Dang ky"<<endl;;
+        cout<<"3. Thoat"<<endl;
+        cout<<"--   Nhap so de lua chon (1, 2, 3): ";
         cin>>n; cout<<endl;
         switch (n)
         {
             case 1:
             {
-                // Log In
                 string input_name, input_pass;
                 cout << "--   Dang nhap   --" << endl;
-                cout << "--   Nhap ten nguoi dung: ";
+                cout << "--   Nhap ten dang nhap: ";
                 cin >> input_name;
                 cout << "--   Nhap mat khau: ";
                 cin >> input_pass;
 
-                // Check if the login is successful
                 if (verify_login(input_name, input_pass, users)) 
                 {
                     cout << "\n--   Dang nhap thanh cong!   --" << endl;
-                    cout<<"--   Nhan bat ki phim gi de tiep tuc   --";
+                    cout<<"--   Nhan bat ki phim gi de tiep tuc   --\n";
                     getch();
                     system("cls");
                 } 
@@ -707,6 +729,7 @@ int main()
                     cout << "--   Ten nguoi dung hoac mat khau sai!   --" << endl;
                     break;
                 }
+
                 USER *loginUser = searchUsers(users, input_name);   
                 int choice = 0;
                 while (choice != 8)
@@ -730,18 +753,20 @@ int main()
                         loginUser->addPost();
                         break;
                     }
+
                     case 2: //Bài viết của mình
                     {
                         loginUser->showPost(loginUser);
                         break;
                     }
-                    case 3: //Moi nguoi
+
+                    case 3: //Mọi người
                     {
                         everyonePost(loginUser, users);
                         break;
                     }  
 
-                    case 4:
+                    case 4: //Bạn bè
                     {
                         showFriend(loginUser, users);
                         break;
@@ -752,6 +777,7 @@ int main()
                         showMutualFriend(loginUser, users);     
                         break;
                     }
+
                     case 6: //tìm kiếm
                     {
                         cout<<"\n--   Tim kiem nguoi dung   --"<<endl;
@@ -761,13 +787,20 @@ int main()
                         string word;
                         getline(cin, word);
                         cout<<endl;
+
                         searchforUsername(word, users, loginUser);
                         break;
                     }
+
+                    case 7: //Tin nhắn từ người lạ
+                    {
+
+                    }
+
                     case 8: // đăng xuất
                     {
                         cout<<"\n--   Tam biet ["<<loginUser->get_name()<<"]!   --\n";
-                        cout<<"--   Nhan bat ki phim gi de tiep tuc   --";
+                        cout<<"--   Nhan bat ki phim gi de tiep tuc   --\n";
                         getch();
                         system("cls");
                         break;
@@ -779,12 +812,13 @@ int main()
                 }
                 break;
             }
+
             case 2:
             {
-                // Sign Up
                 sign_up(users);
                 break;
             }
+
             case 3:
             {
                 cout<<"--   Thank you and goodbye!   --\n\n";
@@ -795,7 +829,5 @@ int main()
                 cout<<"--   Lua chon khong hop le!   --\n";
                 break;
     }
-}
-   
-
+    }
 }
