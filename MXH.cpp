@@ -147,6 +147,10 @@ public:
     {
         return pass;
     }
+    int get_posts_size()
+    {
+        return posts.size();
+    }
     
 
     void filePost()
@@ -522,77 +526,6 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
         }
         chooseUser(loginUser, matchingUsers, users);
         
-        cout << "\n--   Nhap STT de lua chon nguoi dung: ";
-        int selectedIndex;
-        cin >> selectedIndex;
-
-        if (selectedIndex >= 1 && selectedIndex <= matchingUsers.size()) 
-        {
-            
-            USER* selectedUser = searchUsers(users, matchingUsers[selectedIndex - 1].get_name());
-            int action;
-            while (action != 4)
-            {
-                cout << "\n--   User: [" << selectedUser->get_name() << "]   --\n";
-                cout << "1. Xem bai viet\n";
-                cout << "2. Tin nhan\n";
-                cout << "3. Ket ban\n";
-                cout << "4. Thoat\n";
-                cout << "--   Nhap so de lua chon: ";
-                cin >> action;
-                switch (action)
-                {
-                case 1:
-                    selectedUser->showPost(loginUser);
-                    break;
-                case 2:
-                {
-                    int choicemes = 0;
-                    while (choicemes != 2)
-                    {
-                        loginUser->showMessage(*selectedUser);
-                        cout<<"\n--   Lua chon:    --";
-                        cout<<"\n1. Nhan tin";
-                        cout<<"\n2. Tro ve";
-                        cout<<"\n--   Nhap so de lua chon: ";                      
-                        cin>>choicemes;
-                        switch (choicemes)
-                        {
-                        case 1:
-                            loginUser->typeMessage(*selectedUser);
-                            break;
-
-                        case 2:
-                            cout << "\n--   Dang ket thuc   --\n";
-                            break;
-                    
-                        default:
-                            cout << "\n--   Lua chon khong hop le!   --\n";
-                            break;
-                        }
-                        
-                    }          
-                    break;
-                }
-                case 3:
-                    break;
-                case 4:
-                    cout << "\n--   Dang ket thuc   --\n";
-                    break;
-                
-                default:
-                    cout << "\n--   Lua chon khong hop le!   --\n";
-                    break;
-                }
-
-            }
-            return;
-        }
-        else 
-        {
-            cout << "--   Lua chon khong hop le!   --\n";
-        }
-        
     }
 }
 
@@ -653,10 +586,12 @@ int main()
                     cout<<"\n--   Menu User: ["<<loginUser->get_name()<<"]:   --"<<endl; 
                     cout<<"1. Dang bai"<<endl;
                     cout<<"2. Bai viet cua minh"<<endl;
-                    cout<<"3. Ban be"<<endl;
-                    cout<<"4. Goi y ban be"<<endl;
-                    cout<<"5. Tim kiem nguoi dung"<<endl;
-                    cout<<"6. Dang xuat"<<endl;
+                    cout<<"3. Xem bai viet cua moi nguoi"<<endl;
+                    cout<<"4. Ban be"<<endl;
+                    cout<<"5. Goi y ban be"<<endl;
+                    cout<<"6. Tim kiem nguoi dung"<<endl;
+                    cout<<"7. Tin nhan tu nguoi la"<<endl;
+                    cout<<"8. Dang xuat"<<endl;
                     cout<<"--   Nhap lua chon cua ban: ";
                     cin>>choice;
                     switch (choice)
@@ -672,7 +607,24 @@ int main()
                         loginUser->showPost(loginUser);
                         break;
                     }
-                    case 3: //Bạn bè
+                    case 3: //Moi nguoi
+                    {
+                        int choice3 = 0;
+                        while (choice3 != 4)
+                        {
+                            int iuser = rand() % users.size();
+                            if(users[iuser].get_posts_size() == 0)
+                            {
+                                continue;
+                            }
+                            int ipost = rand() % users[iuser].get_posts_size();
+                        }
+                        
+                        
+
+
+                    }
+                    case 4: //Bạn bè
                     {   
                         /*
                         int choice3 = 0;
@@ -736,7 +688,7 @@ int main()
                         break;
                     }  
                         
-                    case 4:  //gợi ý bạn bè
+                    case 5:  //gợi ý bạn bè
                     {
                         /*
                         cout<<"--   Goi y   --"<<endl;
@@ -774,7 +726,7 @@ int main()
                         
                         break;
                     }
-                    case 5: //tìm kiếm
+                    case 6: //tìm kiếm
                     {
                         cout<<"\n--   Tim kiem nguoi dung   --"<<endl;
                         cout<<"--   Nhap tu tim kiem: ";
@@ -786,7 +738,7 @@ int main()
                         searchforUsername(word, users, loginUser);
                         break;
                     }
-                    case 6: // đăng xuất
+                    case 8: // đăng xuất
                     {
                         cout<<"\n--   Tam biet ["<<loginUser->get_name()<<"]!   --\n";
                         cout<<"--   Nhan bat ki phim gi de tiep tuc   --";
