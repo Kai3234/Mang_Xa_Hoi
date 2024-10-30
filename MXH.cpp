@@ -108,27 +108,17 @@ public:
  
 };
 
-/*
+
 class FRIEND
 {
 protected:
     vector<string> friendname;
     
 public:
-    //Quét dữ liệu về bạn bè
-    void fileFriend();
-    //Kiểm tra có phải là bạn bè
-    bool isFriend();
-    //Kết bạn
-    void makeFriend();
-    //Hiển thị danh sách bạn bè
-    void showFriends();
-    //Hiển thị người dùng có bạn chung 
-    void mutual_friend();
   
 };
-*/
-class USER//: public FRIEND
+
+class USER: public FRIEND
 {
 protected:
     string name;
@@ -148,8 +138,6 @@ public:
     {
         return pass;
     }
-    
-
     void filePost()
     {
         fstream fpost;
@@ -475,7 +463,11 @@ void optionUser(USER* loginUser, USER* selectedUser)
 
 void chooseUser(USER* loginUser, vector<USER> listUser, vector<USER>& users)
 {
-    
+    for (size_t i = 0; i < listUser.size(); ++i) 
+    {
+        cout << i + 1 << ". [" << listUser[i].get_name() << "]\n";
+    }
+        
     while (1)
     {
         cout << "\n--   Nhap STT de lua chon nguoi dung: ";
@@ -483,8 +475,7 @@ void chooseUser(USER* loginUser, vector<USER> listUser, vector<USER>& users)
         cin >> selectedIndex;
         if (selectedIndex >= 1 && selectedIndex <= listUser.size()) 
         {     
-            USER* selectedUser = searchUsers(users, listUser[selectedIndex - 1].get_name());
-            
+            USER* selectedUser = searchUsers(users, listUser[selectedIndex - 1].get_name());      
             optionUser(loginUser, selectedUser);
             return;
         }
@@ -507,7 +498,6 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
         cout << "--   Tu tim kiem duoc nhap khong hop le   --\n";
         return;
     }
-
     vector<USER> matchingUsers;
     for (auto& user : users) 
     {
@@ -525,10 +515,6 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
     else 
     {
         cout << "--   Ket qua tim kiem nguoi dung   --\n";
-        for (size_t i = 0; i < matchingUsers.size(); ++i) 
-        {
-            cout << i + 1 << ". [" << matchingUsers[i].get_name() << "]\n";
-        }
         
         chooseUser(loginUser, matchingUsers, users);
         
@@ -602,6 +588,7 @@ int main()
     {
         users[i].filePost();
     }
+    
     
 
     int n = 0;
