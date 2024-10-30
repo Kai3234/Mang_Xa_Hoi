@@ -372,6 +372,9 @@ void sign_up(vector<USER> &users)
     if (file) {
         file << new_name << " " << new_pass << "\n";
         cout << "--   Dang ky thanh cong!" << endl;
+        cout<<"--   Nhan bat ki phim gi de tiep tuc   --";
+        getch();
+        system("cls");
     } else {
         cerr << "--   Khong the mo User.txt de luu tai khoan   --" << endl;
     }
@@ -410,6 +413,79 @@ USER* searchUsers(vector<USER>& users, string username)
     return nullptr;
 }
 
+void chooseUser(USER* loginUser, vector<USER> listUser, vector<USER>& users)
+{
+    cout << "\n--   Nhap STT de lua chon nguoi dung: ";
+    int selectedIndex;
+    cin >> selectedIndex;
+    if (selectedIndex >= 1 && selectedIndex <= listUser.size()) 
+    {
+            
+    USER* selectedUser = searchUsers(users, listUser[selectedIndex - 1].get_name());
+    int action;
+    while (action != 4)
+    {
+        cout << "\n--   User: [" << selectedUser->get_name() << "]   --\n";
+        cout << "1. Xem bai viet\n";
+        cout << "2. Tin nhan\n";
+        cout << "3. Ket ban\n";
+        cout << "4. Thoat\n";
+        cout << "--   Nhap so de lua chon: ";
+        cin >> action;
+        switch (action)
+        {
+        case 1:
+            selectedUser->showPost(loginUser);
+            break;
+        case 2:
+        {
+            int choicemes = 0;
+            while (choicemes != 2)
+            {
+                loginUser->showMessage(*selectedUser);
+                cout<<"\n--   Lua chon:    --";
+                cout<<"\n1. Nhan tin";
+                cout<<"\n2. Tro ve";
+                cout<<"\n--   Nhap so de lua chon: ";                      
+                cin>>choicemes;
+                switch (choicemes)
+                {
+                case 1:
+                    loginUser->typeMessage(*selectedUser);
+                    break;
+
+                case 2:
+                    cout << "\n--   Dang ket thuc   --\n";
+                    break;
+            
+                default:
+                    cout << "\n--   Lua chon khong hop le!   --\n";
+                    break;
+                }
+                
+            }          
+            break;
+        }
+        case 3:
+            break;
+        case 4:
+            cout << "\n--   Dang ket thuc   --\n";
+            break;
+        
+        default:
+            cout << "\n--   Lua chon khong hop le!   --\n";
+            break;
+        }
+
+        }
+        return;
+    }
+    else 
+    {
+        cout << "--   Lua chon khong hop le!   --\n";
+    }
+}
+
 void searchforUsername(const string& word, vector<USER>& users, USER* loginUser) {
     //cout << "[DEBUG] Received word in searchUsername: '" << word << "'\n";
 
@@ -444,15 +520,17 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
         {
             cout << i + 1 << ". [" << matchingUsers[i].get_name() << "]\n";
         }
-
+        chooseUser(loginUser, matchingUsers, users);
+        
         cout << "\n--   Nhap STT de lua chon nguoi dung: ";
         int selectedIndex;
         cin >> selectedIndex;
 
         if (selectedIndex >= 1 && selectedIndex <= matchingUsers.size()) 
         {
-            int action;
+            
             USER* selectedUser = searchUsers(users, matchingUsers[selectedIndex - 1].get_name());
+            int action;
             while (action != 4)
             {
                 cout << "\n--   User: [" << selectedUser->get_name() << "]   --\n";
@@ -514,6 +592,7 @@ void searchforUsername(const string& word, vector<USER>& users, USER* loginUser)
         {
             cout << "--   Lua chon khong hop le!   --\n";
         }
+        
     }
 }
 
@@ -558,6 +637,9 @@ int main()
                 if (verify_login(input_name, input_pass, users)) 
                 {
                     cout << "--   Dang nhap thanh cong!   --" << endl;
+                    cout<<"--   Nhan bat ki phim gi de tiep tuc   --";
+                    getch();
+                    system("cls");
                 } 
                 else 
                 {
@@ -581,6 +663,7 @@ int main()
                     {
                     case 1: //Đăng bài
                     {
+                        cout<<endl;
                         loginUser->addPost();
                         break;
                     }
@@ -705,7 +788,7 @@ int main()
                     }
                     case 6: // đăng xuất
                     {
-                        cout<<"--   Tam biet ["<<loginUser->get_name()<<"]!   --\n";
+                        cout<<"\n--   Tam biet ["<<loginUser->get_name()<<"]!   --\n";
                         cout<<"--   Nhan bat ki phim gi de tiep tuc   --";
                         getch();
                         system("cls");
@@ -730,7 +813,8 @@ int main()
                 return 0;
             }
                 
-            default: cout<<"--   Lua chon khong hop le!   --\n";
+            default: 
+                cout<<"--   Lua chon khong hop le!   --\n";
                 break;
     }
 }
