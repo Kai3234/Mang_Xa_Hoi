@@ -18,11 +18,11 @@ void show_ad()
 {
     string ads[] = 
     {
-        "\n--   [AD]: Dep Min Khong Ti Vet Cung Crystal Glow! :[AD]   --",
-        "\n--   [AD]: Moi Luc Moi Noi, RelaxPlus Mang Lai Giay Phut! :[AD]   --",
-        "\n--   [AD]: Huong Vi Thanh Loc Tu SlimTea - Co The Thon Gon Tu Ben Trong! :[AD]   --",
-        "\n--   [AD]: Kham Pha Am Thanh Dinh Cao Cung SoundMax Pro! :[AD]   --",
-        "\n--   [AD]: Duolingo - Cach Hoc Ngoai Ngu Tot Nhat The Gioi! :[AD]   --"
+        "\n-----   [AD]: Dep Min Khong Ti Vet Cung Crystal Glow! :[AD]   -----",
+        "\n-----   [AD]: Moi Luc Moi Noi, RelaxPlus Mang Lai Giay Phut! :[AD]   -----",
+        "\n-----   [AD]: Huong Vi Thanh Loc Tu SlimTea - Co The Thon Gon Tu Ben Trong! :[AD]   -----",
+        "\n-----   [AD]: Kham Pha Am Thanh Dinh Cao Cung SoundMax Pro! :[AD]   -----",
+        "\n-----   [AD]: Duolingo - Cach Hoc Ngoai Ngu Tot Nhat The Gioi! :[AD]   -----"
     };
 
     int ad_index = rand() % 5;  
