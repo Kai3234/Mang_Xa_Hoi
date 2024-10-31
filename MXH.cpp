@@ -2,6 +2,10 @@
 #include <iomanip>
 #include <conio.h>  
 #include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+#include <sstream>
 #include <fstream>
 #include <algorithm>
 
