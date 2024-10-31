@@ -1,1 +1,1 @@
-                            cout << "--   Dang ket thuc   --\n";
+//#include <cstdlib> //rng

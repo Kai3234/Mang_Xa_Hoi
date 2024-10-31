@@ -1,30 +1,24 @@
 #include <iostream>
 #include <iomanip>
-#include <conio.h>
-#include <cstdlib> //rng
-#include <ctime>  
+#include <conio.h>  
 #include <vector>
-#include <string>
 #include <fstream>
-#include <sstream>
 #include <algorithm>
-
 
 using namespace std;
 
 
-
-void show_ad() 
+void show_ad(string post_content) 
 {
     string ads[] = 
     {
         "\n-----   [AD]: Dep Min Khong Ti Vet Cung Crystal Glow! :[AD]   -----",
-        "\n-----   [AD]: Moi Luc Moi Noi, RelaxPlus Mang Lai Giay Phut! :[AD]   -----",
+        "\n-----   [AD]: Xoa Tan Dau Nhuc Tan Huong Cuoc Song Voi RelaxPlus! :[AD]   -----",
         "\n-----   [AD]: Huong Vi Thanh Loc Tu SlimTea - Co The Thon Gon Tu Ben Trong! :[AD]   -----",
         "\n-----   [AD]: Kham Pha Am Thanh Dinh Cao Cung SoundMax Pro! :[AD]   -----",
         "\n-----   [AD]: Duolingo - Cach Hoc Ngoai Ngu Tot Nhat The Gioi! :[AD]   -----"
     };
-
+    
     int ad_index = rand() % 5;  
     cout << ads[ad_index] << endl;
 }
@@ -228,7 +222,7 @@ public:
                 int random_number = rand() % 2 + 1;
                 if (random_number == 1) 
                 {
-                    show_ad();
+                    show_ad(posts[postOrder].get_content());
                 }
 
                 cout<<"\n--   Bai viet "<<postOrder + 1<<"   --"<<endl;
@@ -596,14 +590,14 @@ void everyonePost(USER* loginUser, vector<USER>& users)
         {
             continue;
         }
+        int ipost = rand() % users[iuser].posts.size();
             
         int random_number = rand() % 2 + 1; 
         if (random_number == 1) 
         {
-            show_ad();
+            show_ad(users[iuser].posts[ipost].get_content());
         }
         
-        int ipost = rand() % users[iuser].posts.size();
         cout<<"\n--   Bai viet "<<ipost + 1<<"   --"<<endl;
         cout<<"["<<users[iuser].get_name()<<"]"<<endl;                        
         cout<<users[iuser].posts[ipost].get_content()<<endl;
