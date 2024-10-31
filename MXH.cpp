@@ -340,7 +340,7 @@ public:
     {
         if (isFriend(friendName)) 
         {
-            cout << friendName << "--   Cac ban da la ban be voi nhau    --\n";
+            cout << "--   Cac ban da la ban be voi nhau    --\n";
             return;
         }
 
@@ -355,7 +355,7 @@ public:
         outfile2 << name << endl;
         outfile2.close();
 
-        cout << "--   Thanh cong ket ban voi [" << friendName << "]   --\n";
+        cout << "\n--   Thanh cong ket ban voi [" << friendName << "]   --\n";
     }
 };
 
@@ -666,10 +666,10 @@ void showMutualFriend(USER* loginUser, vector<USER>& users)
         {
             if (user.isFriend(friendName) && user.get_name() != loginUser->get_name()) 
             {
-                if (find(mutualFriends.begin(), mutualFriends.end(), friendName) == mutualFriends.end()) 
+                if(find(loginUserFriends.begin(), loginUserFriends.end(), user.get_name()) == loginUserFriends.end() && find(mutualFriends.begin(), mutualFriends.end(), user.get_name()) == mutualFriends.end())
                 {
                     mutualFriends.push_back(user.get_name());
-                }
+                }       
             }
         }
     }
