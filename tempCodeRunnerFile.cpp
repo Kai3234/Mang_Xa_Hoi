@@ -1,1 +1,1 @@
-//#include <cstdlib> //rng
+cin
