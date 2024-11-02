@@ -7,6 +7,8 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include <cstdio>
+
 
 using namespace std;
 
@@ -497,7 +499,7 @@ void optionUser(USER* loginUser, USER* selectedUser)
                     cout<<"\n--   Lua chon:    --";
                     cout<<"\n1. Nhan tin";
                     cout<<"\n2. Tro ve\n";
-                    cout<<"\n9. Xoa tat ca noi dung cuoc tro chuyen";
+                    cout<<"\n{9. Xoa tat ca noi dung cuoc tro chuyen}";
                     cout<<"\n--   Nhap so de lua chon: ";                      
                     cin>>choicemes;
                     if (cin.fail())
@@ -516,6 +518,33 @@ void optionUser(USER* loginUser, USER* selectedUser)
                         case 2:
                             cout << "\n--   Dang ket thuc   --\n";
                             break;
+
+                        case 9:
+                        {
+                            cout<<"\n--   Tiep tuc se xoa het tat ca cuoc tro chuyen giua 2 nguoi va khong the khoi phuc lai   --";
+                            cout<<"\n--   Nhap \"accept\" de tiep tuc hoac bat ki chuoi ki tu khac de thoat: ";
+                            cin.ignore(1);
+                            string accept;
+                            getline(cin, accept);
+                            if (accept == "accept")
+                            {
+                                string chatFile = loginUser->getChatFileName(*selectedUser);
+                                int result = remove(chatFile.c_str());
+                                if(result == 0)
+                                {
+                                    cout<<"\n--   Cuoc tro chuyen xoa thanh cong   --";
+                                }
+                                else
+                                {
+                                    cout<<"\n--   Xay ra loi, cuoc tro chuyen khong duoc xoa   --";
+                                }
+                            }
+                            else
+                            {
+                                cout<<"\n--   Ban quyet dinh khong xoa cuoc tro chuyen   --";
+                            }
+                            break;
+                        }
                         
                         default:
                             cout << "\n--   Lua chon khong hop le!   --\n";
