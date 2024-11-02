@@ -433,27 +433,6 @@ void sign_up(vector<USER> &users)
     file.close();
 }
 
-
-//tìm kiếm
-string toLower(const string& str) 
-{
-    string result = str;
-    transform(result.begin(), result.end(), result.begin(), ::tolower);
-    return result;
-}
-
-string trim(const string& str) 
-{
-    size_t first = str.find_first_not_of(" \t\n");
-    size_t last = str.find_last_not_of(" \t\n");
-    if (first == string::npos || last == string::npos) 
-    {
-        return "";
-    }
-    return str.substr(first, last - first + 1);
-}
-
-
 USER* searchUsers(vector<USER>& users, string username)
 {
     for (int i = 0; i < users.size(); i++)
@@ -606,6 +585,26 @@ void chooseUser(USER* loginUser, vector<string> listUser, vector<USER>& users)
             }
         }       
     }   
+}
+
+
+//tìm kiếm
+string toLower(const string& str) 
+{
+    string result = str;
+    transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
+}
+
+string trim(const string& str) 
+{
+    size_t first = str.find_first_not_of(" \t\n");
+    size_t last = str.find_last_not_of(" \t\n");
+    if (first == string::npos || last == string::npos) 
+    {
+        return "";
+    }
+    return str.substr(first, last - first + 1);
 }
 
 void searchforUsername(string& word, vector<USER>& users, USER* loginUser) 
@@ -780,7 +779,8 @@ void detectMessages(USER* loginUser, vector<USER>& users)
                     if (file && loginUser->isFriend(chatName))
                     {
                         chatFriendUsers.push_back(users[i].get_name());
-                    }  
+                    } 
+                    file.close(); 
                 }   
             }
             if (chatFriendUsers.size() == 0)
@@ -808,6 +808,7 @@ void detectMessages(USER* loginUser, vector<USER>& users)
                     {
                         chatStrangeUsers.push_back(users[i].get_name());
                     }  
+                    file.close();
                 }   
             }
             if (chatStrangeUsers.size() == 0)
