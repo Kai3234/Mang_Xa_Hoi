@@ -13,22 +13,6 @@
 using namespace std;
 
 
-void show_ad() 
-{
-    string ads[] = 
-    {
-        "\n-----   [AD]: Dep Min Khong Ti Vet Cung Crystal Glow! :[AD]   -----",
-        "\n-----   [AD]: Xoa Tan Dau Nhuc Tan Huong Cuoc Song Voi RelaxPlus! :[AD]   -----",
-        "\n-----   [AD]: Huong Vi Thanh Loc Tu SlimTea - Co The Thon Gon Tu Ben Trong! :[AD]   -----",
-        "\n-----   [AD]: Kham Pha Am Thanh Dinh Cao Cung SoundMax Pro! :[AD]   -----",
-        "\n-----   [AD]: Duolingo - Cach Hoc Ngoai Ngu Tot Nhat The Gioi! :[AD]   -----"
-    };
-    
-    int ad_index = rand() % 5;  
-    cout << ads[ad_index] << endl;
-}
-
-
 class COMMENT
 {
 protected:
@@ -124,6 +108,21 @@ public:
         return friendlist;
     }
 };
+
+void show_ad() 
+{
+    string ads[] = 
+    {
+        "\n-----   [AD]: Dep Min Khong Ti Vet Cung Crystal Glow! :[AD]   -----",
+        "\n-----   [AD]: Xoa Tan Dau Nhuc Tan Huong Cuoc Song Voi RelaxPlus! :[AD]   -----",
+        "\n-----   [AD]: Huong Vi Thanh Loc Tu SlimTea - Co The Thon Gon Tu Ben Trong! :[AD]   -----",
+        "\n-----   [AD]: Kham Pha Am Thanh Dinh Cao Cung SoundMax Pro! :[AD]   -----",
+        "\n-----   [AD]: Duolingo - Cach Hoc Ngoai Ngu Tot Nhat The Gioi! :[AD]   -----"
+    };
+    
+    int ad_index = rand() % 5;  
+    cout << ads[ad_index] << endl;
+}
 
 class USER: public FRIEND
 {
