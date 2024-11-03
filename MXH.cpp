@@ -235,7 +235,7 @@ public:
                 posts[postOrder].showComment();
 
                 cout<<"--   Lua chon   --"<<endl;
-                cout<<"1. Binh luan"<<endl<<"2. Xem bai viet truoc"<<endl<<"3. Xem bai viet tiep theo"<<endl<<"4. Tro ve giao dien chinh"<<endl;
+                cout<<"1. Binh luan"<<endl<<"2. Xem bai viet truoc"<<endl<<"3. Xem bai viet tiep theo"<<endl<<"4. Quay lai giao dien chinh"<<endl;
                 cout<<"--   Nhap so de lua chon: "; 
                 cin>>m;
                 if (cin.fail())
