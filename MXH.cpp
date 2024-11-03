@@ -284,6 +284,42 @@ public:
         }   
     } 
 
+    void fileFriend() 
+    {
+        ifstream infile("Friends/" + name + "_friends.txt"); 
+        string friendName;
+        while (infile >> friendName) 
+        {
+            if (!isFriend(friendName)) 
+            {
+                friendlist.push_back(friendName);
+            }
+        }
+        infile.close();
+    }
+
+    void makeFriend(string friendName, USER* friendUser) 
+    {
+        if (isFriend(friendName)) 
+        {
+            cout << "--   Cac ban da la ban be voi nhau    --\n";
+            return;
+        }
+
+        friendlist.push_back(friendName);
+        friendUser->friendlist.push_back(name);
+
+        ofstream outfile1("Friends/" + name + "_friends.txt", ios::app);
+        outfile1 << friendName << endl;
+        outfile1.close();
+
+        ofstream outfile2("Friends/" + friendName + "_friends.txt", ios::app);
+        outfile2 << name << endl;
+        outfile2.close();
+
+        cout << "\n--   Thanh cong ket ban voi [" << friendName << "]   --\n";
+    }
+
     string getChatFileName(USER& chatUser) 
     {
         string filename = this->name + "_" + chatUser.name + ".txt";
@@ -325,42 +361,6 @@ public:
             cout << line << endl;
         }
         infile.close();
-    }
-
-    void fileFriend() 
-    {
-        ifstream infile("Friends/" + name + "_friends.txt"); 
-        string friendName;
-        while (infile >> friendName) 
-        {
-            if (!isFriend(friendName)) 
-            {
-                friendlist.push_back(friendName);
-            }
-        }
-        infile.close();
-    }
-
-    void makeFriend(string friendName, USER* friendUser) 
-    {
-        if (isFriend(friendName)) 
-        {
-            cout << "--   Cac ban da la ban be voi nhau    --\n";
-            return;
-        }
-
-        friendlist.push_back(friendName);
-        friendUser->friendlist.push_back(name);
-
-        ofstream outfile1("Friends/" + name + "_friends.txt", ios::app);
-        outfile1 << friendName << endl;
-        outfile1.close();
-
-        ofstream outfile2("Friends/" + friendName + "_friends.txt", ios::app);
-        outfile2 << name << endl;
-        outfile2.close();
-
-        cout << "\n--   Thanh cong ket ban voi [" << friendName << "]   --\n";
     }
 };
 
@@ -586,59 +586,6 @@ void chooseUser(USER* loginUser, vector<string> listUser, vector<USER>& users)
     }   
 }
 
-//tìm kiếm
-string toLower(const string& str) 
-{
-    string result = str;
-    transform(result.begin(), result.end(), result.begin(), ::tolower);
-    return result;
-}
-
-string trim(const string& str) 
-{
-    size_t first = str.find_first_not_of(" \t\n");
-    size_t last = str.find_last_not_of(" \t\n");
-    if (first == string::npos || last == string::npos) 
-    {
-        return "";
-    }
-    return str.substr(first, last - first + 1);
-}
-
-void searchforUsername(string& word, vector<USER>& users, USER* loginUser) 
-{
-    string lowerWord = toLower(trim(word));
-
-    if (lowerWord.empty()) 
-    {
-        cout << "--   Tu tim kiem duoc nhap khong hop le   --\n";
-        return;
-    }
-
-    vector<string> matchingUsers;
-    for (auto& user : users) 
-    {
-        string lowerUsername = toLower(user.get_name());
-        if (lowerUsername.find(lowerWord) != string::npos && lowerUsername != toLower(loginUser->get_name())) 
-        {
-            matchingUsers.push_back(user.get_name());
-        }
-    }
-
-    if (matchingUsers.empty()) 
-    {
-        cout << "--   Khong co ket qua tim kiem thich hop   --\n";
-        return;
-    }
-    else 
-    {
-        cout << "--   Ket qua tim kiem nguoi dung   --\n";
-        
-        chooseUser(loginUser, matchingUsers, users);
-        
-    }
-}
-
 //Xem bài viết bất kì
 void everyonePost(USER* loginUser, vector<USER>& users)
 {
@@ -745,6 +692,63 @@ void showMutualFriend(USER* loginUser, vector<USER>& users)
     cout << "\n--   Nhung nguoi ban co the biet   --\n";
     chooseUser(loginUser, mutualFriends, users);
 }
+
+//tìm kiếm
+string toLower(const string& str) 
+{
+    string result = str;
+    transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
+}
+
+string trim(const string& str) 
+{
+    size_t first = str.find_first_not_of(" \t\n");
+    size_t last = str.find_last_not_of(" \t\n");
+    if (first == string::npos || last == string::npos) 
+    {
+        return "";
+    }
+    return str.substr(first, last - first + 1);
+}
+
+void searchforUsername(string& word, vector<USER>& users, USER* loginUser) 
+{
+    string lowerWord = toLower(trim(word));
+
+    if (lowerWord.empty()) 
+    {
+        cout << "--   Tu tim kiem duoc nhap khong hop le   --\n";
+        return;
+    }
+
+    vector<string> matchingUsers;
+    for (auto& user : users) 
+    {
+        string lowerUsername = toLower(user.get_name());
+        if (lowerUsername.find(lowerWord) != string::npos && lowerUsername != toLower(loginUser->get_name())) 
+        {
+            matchingUsers.push_back(user.get_name());
+        }
+    }
+
+    if (matchingUsers.empty()) 
+    {
+        cout << "--   Khong co ket qua tim kiem thich hop   --\n";
+        return;
+    }
+    else 
+    {
+        cout << "--   Ket qua tim kiem nguoi dung   --\n";
+        
+        chooseUser(loginUser, matchingUsers, users);
+        
+    }
+}
+
+
+
+
 
 //Kiểm tra có tồn tại tin nhắn
 void detectMessages(USER* loginUser, vector<USER>& users)
