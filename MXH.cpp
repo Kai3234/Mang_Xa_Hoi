@@ -235,7 +235,7 @@ public:
                 posts[postOrder].showComment();
 
                 cout<<"--   Lua chon   --"<<endl;
-                cout<<"1. Binh luan"<<endl<<"2. Truoc"<<endl<<"3. Sau"<<endl<<"4. Thoat"<<endl;
+                cout<<"1. Binh luan"<<endl<<"2. Xem bai viet truoc"<<endl<<"3. Xem bai viet tiep theo"<<endl<<"4. Tro ve giao dien chinh"<<endl;
                 cout<<"--   Nhap so de lua chon: "; 
                 cin>>m;
                 if (cin.fail())
@@ -453,7 +453,7 @@ void optionUser(USER* loginUser, USER* selectedUser)
         cout << "1. Xem bai viet\n";
         cout << "2. Tin nhan\n";
         cout << "3. Ket ban\n";
-        cout << "4. Thoat\n";
+        cout << "4. Quay lai giao dien chinh\n";
         cout << "--   Nhap so de lua chon: ";
         cin >> action;
         if (cin.fail())
@@ -554,7 +554,7 @@ void chooseUser(USER* loginUser, vector<string> listUser, vector<USER>& users)
     {
         cout << i + 1 << ". [" << listUser[i] << "]\n";
     }
-    cout<<endl<<listUser.size() + 1<<". Thoat";
+    cout<<endl<<listUser.size() + 1<<". Quay lai giao dien chinh";
     
     int selectedIndex;
     while (selectedIndex != listUser.size() + 1)
@@ -585,7 +585,6 @@ void chooseUser(USER* loginUser, vector<string> listUser, vector<USER>& users)
         }       
     }   
 }
-
 
 //tìm kiếm
 string toLower(const string& str) 
@@ -667,8 +666,8 @@ void everyonePost(USER* loginUser, vector<USER>& users)
         cout<<"--   Lua chon   --"<<endl;
         cout<<"1. Xem nguoi dang"<<endl;
         cout<<"2. Binh luan"<<endl;
-        cout<<"3. Tiep"<<endl;
-        cout<<"4. Thoat"<<endl;
+        cout<<"3. Xem bai viet tiep theo"<<endl;
+        cout<<"4. Quay lai giao dien chinh"<<endl;
         cout<<"--   Nhap so de lua chon: "; 
         cin>>choice3;
         if (cin.fail())
@@ -753,13 +752,14 @@ void detectMessages(USER* loginUser, vector<USER>& users)
     cout<<"\n--   Tin nhan voi moi nguoi   --"<<endl;
     cout<<"1. Tin nhan voi ban be"<<endl;
     cout<<"2. Tin nhan voi nguoi la"<<endl;
+    cout<<". Hoac nhap lua chon bat ki khac de quay lai giao dien chinh"<<endl;
     cout<<"--   Nhap so de lua chon: ";
     int choice;
     cin>>choice;
     if (cin.fail())
     {
         cin.clear(); cin.ignore(512, '\n');
-        cout << "\n--   Lua chon khong hop le!   --\n";
+        cout << "\n--   Dang tro ve   --\n";
     }
     else
     {
@@ -822,7 +822,7 @@ void detectMessages(USER* loginUser, vector<USER>& users)
         }  
 
         default:
-            cout<<"\n-   Lua chon khong hop le!   --\n";
+            cout<<"\n-   Dang tro ve   --\n";
             break;
         }    
     }

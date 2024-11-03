@@ -1,1 +1,1 @@
-cin
+thoat
