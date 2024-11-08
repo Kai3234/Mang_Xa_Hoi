@@ -1,0 +1,2 @@
+The weather is clear
+the weather is thunderstorm

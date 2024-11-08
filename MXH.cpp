@@ -56,18 +56,7 @@ public:
     {
         return content;
     }
-
-    void showComment()
-    {
-        cout<<"     +) Binh luan:"<<endl;
-        for(int i = 0; i < comments.size(); i++)
-        {
-            cout<<"     ["<<comments[i].get_comment_user()<<"]: ";
-            cout<<comments[i].get_comment_content()<<endl;
-        }
-        cout<<endl;
-    }
-
+    
     void filecomment()
     {
         fstream fcomment;
@@ -89,6 +78,19 @@ public:
         }
         fcomment.close();
     }
+
+    void showComment()
+    {
+        cout<<"     +) Binh luan:"<<endl;
+        for(int i = 0; i < comments.size(); i++)
+        {
+            cout<<"     ["<<comments[i].get_comment_user()<<"]: ";
+            cout<<comments[i].get_comment_content()<<endl;
+        }
+        cout<<endl;
+    }
+
+    
 };
 
 
@@ -98,15 +100,16 @@ protected:
     vector<string> friendlist; 
 
 public:
+    vector<string>& getFriends() 
+    {
+        return friendlist;
+    }
+
     bool isFriend(string& name)  
     {
         return find(friendlist.begin(), friendlist.end(), name) != friendlist.end();
     }
 
-    vector<string>& getFriends() 
-    {
-        return friendlist;
-    }
 };
 
 void show_ad() 
@@ -235,7 +238,7 @@ public:
                 posts[postOrder].showComment();
 
                 cout<<"--   Lua chon   --"<<endl;
-                cout<<"1. Binh luan"<<endl<<"2. Xem bai viet truoc"<<endl<<"3. Xem bai viet tiep theo"<<endl<<"4. Quay lai giao dien chinh"<<endl;
+                cout<<"1. Binh luan"<<endl<<"2. Xem bai viet truoc"<<endl<<"3. Xem bai viet tiep theo"<<endl<<"4. Tro ve"<<endl;
                 cout<<"--   Nhap so de lua chon: "; 
                 cin>>m;
                 if (cin.fail())
@@ -453,7 +456,7 @@ void optionUser(USER* loginUser, USER* selectedUser)
         cout << "1. Xem bai viet\n";
         cout << "2. Tin nhan\n";
         cout << "3. Ket ban\n";
-        cout << "4. Quay lai giao dien chinh\n";
+        cout << "4. Quay lai\n";
         cout << "--   Nhap so de lua chon: ";
         cin >> action;
         if (cin.fail())
